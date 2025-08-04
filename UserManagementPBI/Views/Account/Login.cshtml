@@ -1,0 +1,57 @@
+﻿@using UserManagementPBI.ViewModels
+@model LoginViewModel
+
+@{
+    ViewData["Title"] = "Login";
+    Layout = "~/Views/Shared/_AccountLayout.cshtml"; // Or _Layout.cshtml if shared
+}
+
+<div class="login-container">
+    <main class="login-card">
+        <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/edc67ce4aaa5a7f3cc5b74315ed975fc28b0978f?placeholderIfAbsent=true&apiKey=099995ce3fec4a6aab6339dc5406b76b" alt="" class="background-image" />
+
+        <div class="content">
+            <header class="welcome-header">
+                <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/602c443cb3142b6dbfcc036297e266fdf9663c17?placeholderIfAbsent=true&apiKey=099995ce3fec4a6aab6339dc5406b76b" alt="Logo" class="logo" />
+                <h1 class="welcome-title">Bienvenue,</h1>
+                <p class="welcome-subtitle">Veuillez entrer votre nom d'utilisateur et mot de passe</p>
+            </header>
+
+            <form asp-action="Login" method="post" class="login-form">
+                @Html.AntiForgeryToken()
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <div class="input-container email-input">
+                    <input asp-for="FullName" type="text" placeholder="Nom d'utilisateur"
+                           class="form-input email-field" />
+                    <span asp-validation-for="FullName" class="text-danger"></span>
+                </div>
+
+                <div class="input-container password-input">
+                    <input asp-for="Password" type="password" placeholder="Mot de passe"
+                           class="form-input password-field" />
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+
+                <div class="form-check remember-check">
+                    <label class="form-check-label">
+                        <input asp-for="RememberMe" class="form-check-input" style="color: rgb(82 82 91); margin-top:5px" />
+                        @Html.DisplayNameFor(model => model.RememberMe)
+                    </label>
+                </div>
+
+                <button type="submit" class="login-button">
+                    Se connecter
+                </button>
+
+                <div class="extra-links text-center mt-3">
+                    <a asp-controller="Account" asp-action="VerifyEmail" class="text-decoration-none">Mot de passe oublié ?</a><br />
+                </div>
+            </form>
+        </div>
+    </main>
+</div>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}

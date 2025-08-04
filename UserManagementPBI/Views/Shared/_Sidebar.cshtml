@@ -1,0 +1,44 @@
+﻿<div class="sidebar">
+    <div class="sidebar-header">
+        <div class="logo-section">
+            <div class="logo-content">
+                <div class="administration-title">Administration</div>
+            </div>
+            <div class="right-icon">
+                <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/b98d0774f3db8c22b419dcd6f47bc884cd3a7b33?placeholderIfAbsent=true&apiKey=099995ce3fec4a6aab6339dc5406b76b" alt="Settings" class="settings-icon">
+            </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <nav class="navigation-menu">
+            <a asp-controller="BIUsers" asp-action="Index" class="menu-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "BIUser" ? "active" : "")">
+                <div class="active-indicator"></div>
+                <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/30764aa2204f008da2b0384249b8d29ee9ec1be5?placeholderIfAbsent=true&apiKey=099995ce3fec4a6aab6339dc5406b76b" alt="Dashboard" class="menu-icon">
+                <span>Tableau de bord</span>
+            </a>
+
+            <a asp-controller="History" asp-action="Index" class="menu-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "History" ? "active" : "")">
+                <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/3a55506c103eece157564829c37ed9ffde86bfcc?placeholderIfAbsent=true&apiKey=099995ce3fec4a6aab6339dc5406b76b" alt="History" class="menu-icon">
+                <span>Historique</span>
+            </a>
+
+            <a asp-controller="Statistics" asp-action="Index" class="menu-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "Statistics" ? "active" : "")">
+                <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/371db633b95c658ac6eef3b611a5c46c4b017182?placeholderIfAbsent=true&apiKey=099995ce3fec4a6aab6339dc5406b76b" alt="Statistics" class="menu-icon">
+                <span>Statistiques</span>
+            </a>
+        </nav>
+
+    </div>
+
+    <div class="sidebar-footer">
+        <div class="divider"></div>
+        <div class="user-profile">
+            <img src="https://img.favpng.com/21/13/5/user-profile-default-computer-icons-network-video-recorder-png-favpng-7dPZA8WRdY80Uw3bdMWkEN4fR.jpg" alt="User Avatar" class="user-avatar">
+            <div class="user-info">
+                <div class="user-name">Bouziani Safae</div>
+                <div class="user-email">safae.bouziani@cegedim.com</div>
+            </div>
+        </div>
+    </div>
+</div>

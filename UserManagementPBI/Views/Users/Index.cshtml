@@ -1,0 +1,142 @@
+﻿@model IEnumerable<UserManagementPBI.Models.Users>
+@{
+    ViewData["Title"] = "Dashboard";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+
+
+<div class="dashboard">
+
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Page Header -->
+        <div class="page-header">
+            <div class="breadcrumbs">
+                <div class="breadcrumb-item">
+                    <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/fcb3bc0414eccce6fe1385a220fa3858e67e605b?placeholderIfAbsent=true&apiKey=099995ce3fec4a6aab6339dc5406b76b" alt="Home" class="breadcrumb-icon">
+                    <span>Tableau de bord</span>
+                </div>
+                <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/4c8200eba9cded5f68650867b7773fea977f1234?placeholderIfAbsent=true&apiKey=099995ce3fec4a6aab6339dc5406b76b" alt="Arrow" class="breadcrumb-arrow">
+            </div>
+            <div class="header-divider"></div>
+        </div>
+
+        <!-- Section Header -->
+        <div class="section-header">
+            <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/53da30b81543d43962b9d4857e9dcaad032d1f08?placeholderIfAbsent=true&apiKey=099995ce3fec4a6aab6339dc5406b76b" alt="Users" class="section-icon">
+            <h1 class="section-title">Utilisateurs BI</h1>
+            <div class="search-bar">
+                <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/175e372235aefe1ea6e66cd6d93728050cfd075c?placeholderIfAbsent=true&apiKey=099995ce3fec4a6aab6339dc5406b76b" alt="Search" class="search-bar-icon">
+                <input type="text" placeholder="Recherche" class="search-input">
+                <div class="search-cursor"></div>
+                <div class="search-clear">
+                    <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/8c8ca446cf0428e96cc51f2560547c5dcf4ab019?placeholderIfAbsent=true&apiKey=099995ce3fec4a6aab6339dc5406b76b" alt="Clear" class="clear-icon">
+                </div>
+            </div>
+            <div class="section-divider"></div>
+        </div>
+
+        <!-- Filter Section -->
+        <div class="filter-section">
+            <div class="filter-left">
+                <button class="filter-button active">
+                    <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/feb0206063aff91bd50c10b8eba96e22102e90eb?placeholderIfAbsent=true&apiKey=099995ce3fec4a6aab6339dc5406b76b" alt="Refresh" class="filter-icon">
+                    <span>Actualiser</span>
+                </button>
+                <button class="filter-button">
+                    <span>1 Selected</span>
+                    <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/71e96c79650866bf8012585bd371790aed4d7d83?placeholderIfAbsent=true&apiKey=099995ce3fec4a6aab6339dc5406b76b" alt="Down" class="filter-icon">
+                </button>
+                <button class="filter-button">
+                    <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/288f65719c668d64c8fb2fb21677b16611d24d9e?placeholderIfAbsent=true&apiKey=099995ce3fec4a6aab6339dc5406b76b" alt="Filter" class="filter-icon">
+                    <span>Filtrer par</span>
+                    <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/e2de99e1992a3e1f98d882c74519f9832d514e81?placeholderIfAbsent=true&apiKey=099995ce3fec4a6aab6339dc5406b76b" alt="Down" class="filter-arrow">
+                </button>
+            </div>
+            <div class="filter-right">
+                <a asp-action="Create">
+                    <button class="action-button primary">
+                        <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/376f640a2a3a1aac147f0da3520427fa0abb8973?placeholderIfAbsent=true&apiKey=099995ce3fec4a6aab6339dc5406b76b" alt="Plus" class="action-icon">
+                        <span>Nouveau</span>
+                    </button>
+                </a>
+                <button class="action-button secondary">
+                    <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/927e0d7a97c637a132d99b0f57f608cd6cf518cd?placeholderIfAbsent=true&apiKey=099995ce3fec4a6aab6339dc5406b76b" alt="Import" class="action-icon">
+                    <span>Import/Export</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Data Table -->
+        <div class="data-table">
+            <table>
+                <thead>
+                    <tr>
+                        <th class="checkbox-column">
+                            <input type="checkbox" id="select-all" class="table-checkbox">
+                        </th>
+                        <th class="sortable">
+                            <span>ID</span>
+                            <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/7c215a276d945185c56ecd3514506bd6ce90d21d?placeholderIfAbsent=true&apiKey=099995ce3fec4a6aab6339dc5406b76b" alt="Sort" class="sort-icon">
+                        </th>
+                        <th class="sortable">
+                            <span>Utilisateur</span>
+                            <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/7c215a276d945185c56ecd3514506bd6ce90d21d?placeholderIfAbsent=true&apiKey=099995ce3fec4a6aab6339dc5406b76b" alt="Sort" class="sort-icon">
+                        </th>
+                        <th class="sortable">
+                            <span>Client</span>
+                            <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/7c215a276d945185c56ecd3514506bd6ce90d21d?placeholderIfAbsent=true&apiKey=099995ce3fec4a6aab6339dc5406b76b" alt="Sort" class="sort-icon">
+                        </th>
+                        <th class="sortable">
+                            <span>Date de création</span>
+                            <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/7c215a276d945185c56ecd3514506bd6ce90d21d?placeholderIfAbsent=true&apiKey=099995ce3fec4a6aab6339dc5406b76b" alt="Sort" class="sort-icon">
+                        </th>
+                        <th class="sortable">
+                            <span>Role</span>
+                            <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/7c215a276d945185c56ecd3514506bd6ce90d21d?placeholderIfAbsent=true&apiKey=099995ce3fec4a6aab6339dc5406b76b" alt="Sort" class="sort-icon">
+                        </th>
+                        <th class="sortable">
+                            <span>Email</span>
+                            <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/7c215a276d945185c56ecd3514506bd6ce90d21d?placeholderIfAbsent=true&apiKey=099995ce3fec4a6aab6339dc5406b76b" alt="Sort" class="sort-icon">
+                        </th>
+                        <th class="sortable">
+                            <span>Mot de passe</span>
+                            <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/7c215a276d945185c56ecd3514506bd6ce90d21d?placeholderIfAbsent=true&apiKey=099995ce3fec4a6aab6339dc5406b76b" alt="Sort" class="sort-icon">
+                        </th>
+                        <th class="sortable">
+                            <span>Action</span>
+                            <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/7c215a276d945185c56ecd3514506bd6ce90d21d?placeholderIfAbsent=true&apiKey=099995ce3fec4a6aab6339dc5406b76b" alt="Sort" class="sort-icon">
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr class="table-row">
+                            <td><input type="checkbox" class="table-checkbox"></td>
+                            <td>@Html.DisplayFor(m => item.ID)</td>
+                            <td class="user-cell">@Html.DisplayFor(m => item.userName)</td>
+                            <td>@Html.DisplayFor(m => item.client)</td>
+                            <td class="date-cell">@Html.DisplayFor(m => item.DateCreation)</td>
+                            <td>@Html.DisplayFor(m => item.role)</td>
+                            <td class="email-cell">@Html.DisplayFor(m => item.mail)</td>
+                            <td class="password-cell">@Html.DisplayFor(m => item.pwd)</td>
+                            <td class="action-cell">
+                                <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
+                                <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
+                                <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
+                            </td>
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Pagination -->
+        <div class="pagination" id="pagination-container"></div>
+    </div>
+</div>
+<script src="~/js/dashboard.js" asp-append-version="true"></script>

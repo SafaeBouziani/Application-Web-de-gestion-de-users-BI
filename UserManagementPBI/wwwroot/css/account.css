@@ -1,0 +1,273 @@
+﻿
+
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: system-ui, -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+.login-container {
+    display: flex;
+    overflow: hidden;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 320px 80px;
+    background-color: rgb(147 197 253); /* bg-blue-300 */
+    min-height: 100vh;
+}
+
+.login-card {
+    display: flex;
+    position: relative;
+    flex-direction: column;
+    padding: 32px 64px 64px 64px;
+    max-width: 100%;
+    min-height: 627px;
+    border-radius: 50px;
+    box-shadow: 0px 1px 3px rgba(0,0,0,0.1);
+    width: 584px;
+}
+
+.background-image {
+    object-fit: cover;
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 50px;
+}
+
+.content {
+    position: relative;
+    z-index: 10;
+}
+
+.welcome-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.logo {
+    object-fit: contain;
+    aspect-ratio: 1.01;
+    width: 75px;
+}
+
+.welcome-title {
+    position: relative;
+    align-self: flex-start;
+    margin-top: 36px;
+    font-size: 36px;
+    font-weight: 700;
+    text-align: center;
+    color: rgb(39 39 42); /* text-zinc-800 */
+}
+
+.welcome-subtitle {
+    position: relative;
+    align-self: flex-start;
+    margin-top: 12px;
+    font-size: 20px;
+    color: rgb(82 82 91); /* text-neutral-600 */
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.input-container {
+    display: flex;
+    position: relative;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 24px 36px;
+    background-color: white;
+    border-radius: 12px;
+    border: 1px solid;
+    color: rgb(82 82 91); /* text-neutral-600 */
+    max-width: 100%;
+}
+
+    .input-container:focus-within {
+        border-color: rgb(59 130 246); /* border-blue-500 */
+    }
+
+.email-input {
+    margin-top: 48px;
+    font-weight: 700;
+    white-space: nowrap;
+    border-color: rgb(229 229 229); /* border-blue-300 */
+}
+
+
+.password-input {
+    margin-top: 24px;
+    border-color: rgb(229 229 229); /* border-neutral-200 */
+}
+
+
+.form-input {
+    background: transparent;
+    border: none;
+    outline: none;
+    width: 100%;
+    color: inherit;
+    font-size: inherit;
+}
+
+    .form-input::placeholder {
+        color: rgb(82 82 91);
+    }
+
+
+
+.login-button {
+    display: flex;
+    position: relative;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    align-self: center;
+    padding: 20px 64px;
+    margin-top: 56px;
+    max-width: 100%;
+    color: white;
+    background-color: rgb(2 132 199); /* bg-sky-600 */
+    border-radius: 8px;
+    width: 312px;
+    border: none;
+    cursor: pointer;
+    font-size: inherit;
+    transition: background-color 0.2s ease;
+}
+
+    .login-button:hover {
+        background-color: rgb(3 105 161); /* hover:bg-sky-700 */
+    }
+
+    .login-button:focus {
+        outline: 2px solid rgb(59 130 246);
+        outline-offset: 2px;
+    }
+
+/* Responsive styles */
+@media (max-width: 768px) {
+    .login-container {
+        padding: 96px 20px;
+    }
+
+    .login-card {
+        padding: 32px 20px 64px 20px;
+    }
+
+    .welcome-title {
+        margin-left: 6px;
+    }
+
+    .welcome-subtitle {
+        margin-left: 2px;
+    }
+
+    .email-input {
+        padding: 24px 20px;
+        margin-top: 40px;
+        margin-right: 2px;
+        max-width: 100%;
+    }
+
+    .password-input {
+        padding: 24px 20px;
+        max-width: 100%;
+    }
+
+    .divider {
+        margin-right: 2px;
+    }
+
+    .login-button {
+        padding: 20px 20px;
+        margin-top: 40px;
+    }
+}
+
+
+/* FIXES */
+
+/* Fix checkbox alignment */
+.table-checkbox {
+    transform: scale(1.2);
+    vertical-align: middle;
+    cursor: pointer;
+}
+
+/* Make menu items clearly clickable */
+.menu-item {
+    cursor: pointer;
+}
+
+/* Row hover effect for clarity */
+.table-row:hover {
+    background-color: #f9fafb;
+}
+
+/* Search clear button visibility */
+.search-clear {
+    opacity: 0;
+    transition: opacity 0.2s;
+    cursor: pointer;
+}
+
+    .search-clear.visible {
+        opacity: 1;
+    }
+
+/* Ensure section header items are aligned properly */
+.section-header {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+
+/* === Sidebar Collapse Styles === */
+.sidebar.collapsed {
+    width: 80px;
+}
+
+.main-content.expanded {
+    margin-left: 80px;
+}
+
+.sidebar.collapsed .sidebar-footer,
+.sidebar.collapsed .menu-item span,
+.sidebar.collapsed .sub-header,
+.sidebar.collapsed .administration-title {
+    display: none;
+}
+
+.sidebar.collapsed .menu-item {
+    justify-content: center;
+}
+
+.sidebar.collapsed .menu-icon {
+    margin: auto;
+}
+
+/* Optional: Smooth transition */
+.sidebar,
+.main-content {
+    transition: all 0.3s ease;
+}
