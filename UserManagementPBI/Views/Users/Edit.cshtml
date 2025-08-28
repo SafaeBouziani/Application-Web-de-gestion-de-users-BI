@@ -1,56 +1,79 @@
 ﻿@model UserManagementPBI.ViewModels.UserFormViewModel
 
 @{
-    ViewData["Title"] = "Edit";
+    Layout = null; // so this works as an AJAX-loaded partial
 }
 
-<h1>Edit</h1>
+<div class="modal fade" id="editUserModal1" tabindex="-1" role="dialog" aria-labelledby="editUserModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <form asp-action="Edit" asp-controller="Users" id="edit-user-form1" method="post">
+                @Html.AntiForgeryToken()
+                <input type="hidden" asp-for="Id" />
 
-<h4>BIUser</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
-            <div class="form-group">
-                <label asp-for="UserName" class="control-label"></label>
-                <input asp-for="UserName" class="form-control" />
-                <span asp-validation-for="UserName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="BIUserRole" class="control-label"></label>
-                <input asp-for="BIUserRole" class="form-control" />
-                <span asp-validation-for="BIUserRole" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Client" class="control-label"></label>
-                <input asp-for="Client" class="form-control" />
-                <span asp-validation-for="Client" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Mail" class="control-label"></label>
-                <input asp-for="Mail" class="form-control" />
-                <span asp-validation-for="Mail" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="View_user" class="control-label"></label>
-                <input asp-for="View_user" class="form-control" />
-                <span asp-validation-for="View_user" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editUserModalLabel">Modifier Utilisateur</h5>
+                    <button type="button" class="close btn-close-modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <div class="form-group">
+                        <label asp-for="UserName" class="control-label"></label>
+                        <input asp-for="UserName" class="form-control" />
+                        <span asp-validation-for="UserName" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="BIUserRole" class="control-label"></label>
+                        <input asp-for="BIUserRole" class="form-control" />
+                        <span asp-validation-for="BIUserRole" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Client" class="control-label"></label>
+                        <input asp-for="Client" class="form-control" />
+                        <span asp-validation-for="Client" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Mail" class="control-label"></label>
+                        <input asp-for="Mail" class="form-control" />
+                        <span asp-validation-for="Mail" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="View_user" class="control-label"></label>
+                        <input asp-for="View_user" class="form-control" />
+                        <span asp-validation-for="View_user" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-close-modal">Annuler</button>
+                    <button type="submit" class="btn btn-success">Enregistrer</button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+<script>
+    $(function () {
+        var $m = $('#editUserModal');
+        $m.modal({ backdrop: 'static', keyboard: false });
+        $m.on('hidden.bs.modal', function () {
+            $(this).remove(); // clean up when closed
+        });
+        $m.on('click', '.btn-close-modal', function () { $m.modal('hide'); });
+    });
+</script>
 
-@section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+<style>
+    .modal-body .form-group {
+        margin-bottom: 1rem;
     }
-}
+</style>

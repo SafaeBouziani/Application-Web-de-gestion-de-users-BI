@@ -1,0 +1,111 @@
+﻿@model UserManagementPBI.ViewModels.ReportsReportsBIFormViewModel
+@using Microsoft.AspNetCore.Mvc.Rendering
+@{
+    Layout = null; // so it works as a partial AJAX view
+    var catalogMapJsonSafe = Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.CatalogMap);
+}
+
+<div class="modal fade" id="createReportBIModal" tabindex="-1" role="dialog" aria-labelledby="createReportBIModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <form asp-action="Create" id="create-reportbi-form">
+                @Html.AntiForgeryToken()
+
+                <div class="modal-header">
+                    <h5 class="modal-title" id="createReportBIModalLabel">
+                        Créer un Report BI
+                    </h5>
+                    <button type="button" class="close btn-close-modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <!-- Report BI (Catalog) Dropdown -->
+                    <div class="form-group">
+                        <label asp-for="id_report_bi" class="control-label">Report BI</label>
+                        @Html.DropDownList("id_report_bi", ViewData["id_report_bi"] as SelectList, "-- Sélectionnez un Report --", new { @class = "form-control", @id = "id_report_bi" })
+                        <small id="reportPathInfo" class="form-text text-muted mt-1" style="display: none;"></small>
+                        <span asp-validation-for="id_report_bi" class="text-danger"></span>
+                    </div>
+
+                    <!-- Title Input -->
+                    <div class="form-group">
+                        <label asp-for="title" class="control-label">Titre du Report</label>
+                        <input asp-for="title" class="form-control" id="title" />
+                        <span asp-validation-for="title" class="text-danger"></span>
+                    </div>
+
+                    <!-- Other Fields -->
+                    <div class="form-group">
+                        <label asp-for="id_web" class="control-label"></label>
+                        <input asp-for="id_web" class="form-control" />
+                        <span asp-validation-for="id_web" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="id_report" class="control-label">Report Group</label>
+                        <select asp-for="id_report" class="form-control" asp-items="ViewBag.id_report"></select>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="report" class="control-label"></label>
+                        <input asp-for="report" class="form-control" />
+                        <span asp-validation-for="report" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="order_report" class="control-label"></label>
+                        <input asp-for="order_report" class="form-control" />
+                        <span asp-validation-for="order_report" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-close-modal">Annuler</button>
+                    <button type="submit" class="btn btn-success">Enregistrer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    const catalogMap = @Html.Raw(catalogMapJsonSafe);
+
+    // Initialize modal when it is shown
+    $(document).on("shown.bs.modal", "#createReportBIModal", function () {
+        var $m = $(this);
+
+        // Close button logic
+        $m.on("click", ".btn-close-modal", function () {
+            $m.modal("hide");
+        });
+
+        // Cleanup when modal is closed
+        $m.on("hidden.bs.modal", function () {
+            $m.remove();
+        });
+    });
+
+    // Attach change handler with delegation (works for dynamically loaded modal)
+    $(document).on("change", "#id_report_bi", function () {
+        const selectedId = this.value;
+        const titleInput = $("#title");
+        const pathInfo = $("#reportPathInfo");
+
+        if (catalogMap[selectedId]) {
+            titleInput.val(catalogMap[selectedId].Name);
+            pathInfo.text("Path: /" + catalogMap[selectedId].Path);
+            pathInfo.show();
+        } else {
+            titleInput.val("");
+            pathInfo.hide();
+        }
+    });
+</script>
+
+<style>
+    .modal-body .form-group {
+        margin-bottom: 1rem;
+    }
+</style>

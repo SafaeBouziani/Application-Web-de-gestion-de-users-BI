@@ -1,0 +1,199 @@
+﻿/* Base */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background-color: #f9fafb;
+    color: #374151;
+    line-height: 1.6;
+    padding: 0;
+    margin: 0;
+}
+
+
+/* Containers */
+.container {
+    background: #ffffff;
+    border-radius: 14px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.04);
+    padding: 24px;
+    max-width: 900px;
+    margin: 20px auto;
+    transition: box-shadow 0.2s ease;
+}
+
+    .container:hover {
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+    }
+
+
+/* Layout */
+.user-details {
+    padding: 20px;
+}
+
+.content-grid {
+    display: grid;
+    grid-template-columns: 400px 1fr;
+    gap: 20px;
+}
+
+/* Profile Card */
+.user-details-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    text-align: center;
+}
+
+.user-photo {
+    margin-bottom: 12px;
+}
+.user-details-section {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch; /* was center */
+    text-align: left;
+}
+
+.profile-image {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #f3f4f6;
+    transition: border-color 0.2s ease;
+}
+
+    .profile-image:hover {
+        border-color: #2563eb;
+    }
+
+.user-name-title {
+    margin-top: 10px;
+    font-size: 1.25em;
+    font-weight: 600;
+}
+
+/* Details Section */
+.details-title {
+    font-size: 1.1em;
+    margin-top: 20px;
+    font-weight: 500;
+}
+
+.details-divider {
+    border-bottom: 1px solid #eee;
+    margin: 8px 0;
+}
+
+.detail-item {
+    display: flex;
+    justify-content: space-between;
+    margin: 6px 0;
+    padding: 4px 0;
+    width: 100%;
+}
+
+.detail-label {
+    font-weight: 600;
+    color: #555;
+}
+
+.detail-value {
+    color: #333;
+}
+
+.edit-button2 {
+    background-color: #2d89ff;
+    color: white;
+    padding: 8px 14px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.25s ease;
+}
+
+    .edit-button:hover {
+        background-color: #1d6ce0;
+    }
+
+/* Reports List */
+.reports-list {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    padding: 20px;
+    position: relative;
+}
+
+.reports-header {
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+.report-group {
+    border-top: 1px solid #eee;
+}
+
+.report-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    padding: 12px;
+    background-color: #f7f8fc;
+    transition: background-color 0.2s ease;
+}
+
+    .report-header:hover {
+        background-color: #f0f2fa;
+    }
+
+.report-title {
+    font-weight: 500;
+}
+
+.report-list {
+    display: none;
+    padding-left: 20px;
+}
+
+.report-item {
+    padding: 8px 0;
+    border-bottom: 1px solid #f1f1f1;
+}
+
+    .report-item:last-child {
+        border-bottom: none;
+    }
+
+/* Floating Plus Button */
+.plus-button {
+    background-color: #2d89ff;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    font-size: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+    transition: background-color 0.25s ease, transform 0.15s ease;
+    margin-top: 20px; /* spacing from last report */
+}
+
+
+    .plus-button:hover {
+        background-color: #1d6ce0;
+        transform: scale(1.05);
+    }
+
+    .plus-button:active {
+        transform: scale(0.98);
+    }

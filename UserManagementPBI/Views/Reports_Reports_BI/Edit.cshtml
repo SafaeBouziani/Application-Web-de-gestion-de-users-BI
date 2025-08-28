@@ -1,0 +1,88 @@
+﻿@model UserManagementPBI.ViewModels.ReportsReportsBIFormViewModel
+
+@{
+    Layout = null; // so this works as an AJAX-loaded partial
+}
+
+<div class="modal fade" id="editReportBIModal" tabindex="-1" role="dialog" aria-labelledby="editReportBIModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <form asp-action="Edit" asp-controller="Reports_Reports_BI" id="edit-reportbi-form" method="post">
+                @Html.AntiForgeryToken()
+                <input asp-for="ID_Reports_Reports_BI" type="hidden" />
+                <input type="hidden" name="id" value="@Model.ID_Reports_Reports_BI" />
+
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editReportBIModalLabel">
+                        Modifier Report BI
+                    </h5>
+                    <button type="button" class="close btn-close-modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <div class="form-group">
+                        <label asp-for="id_report_bi" class="control-label">Report BI</label>
+                        <input asp-for="id_report_bi" class="form-control" readonly />
+                        <span asp-validation-for="id_report_bi" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="title" class="control-label">Titre</label>
+                        <input asp-for="title" class="form-control" />
+                        <span asp-validation-for="title" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="id_web" class="control-label">ID Web</label>
+                        <input asp-for="id_web" class="form-control" />
+                        <span asp-validation-for="id_web" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="id_report" class="control-label">Report Group</label>
+                        <select asp-for="id_report" class="form-control" asp-items="ViewBag.id_report"></select>
+                        <span asp-validation-for="id_report" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="report" class="control-label">Report (fichier)</label>
+                        <input asp-for="report" class="form-control" />
+                        <span asp-validation-for="report" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="order_report" class="control-label">Ordre</label>
+                        <input asp-for="order_report" class="form-control" />
+                        <span asp-validation-for="order_report" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-close-modal">Annuler</button>
+                    <button type="submit" class="btn btn-success">Enregistrer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        var $m = $('#editReportBIModal');
+        $m.modal({ backdrop: 'static', keyboard: false });
+        $m.on('hidden.bs.modal', function () {
+            $(this).remove(); // clean up when closed
+        });
+        $m.on('click', '.btn-close-modal', function () { $m.modal('hide'); });
+    });
+</script>
+
+<style>
+    .modal-body .form-group {
+        margin-bottom: 1rem;
+    }
+</style>

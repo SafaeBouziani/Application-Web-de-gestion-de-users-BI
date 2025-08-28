@@ -1,0 +1,94 @@
+﻿@model UserManagementPBI.ViewModels.ReportsReportsBIFormViewModel
+@using Microsoft.AspNetCore.Mvc.Rendering
+@{
+    Layout = null;
+    var catalogMapJsonSafe = Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.CatalogMap);
+}
+
+<div class="modal fade" id="addReportBIModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <form asp-action="AddReportBI" id="add-reportbi-form">
+                @Html.AntiForgeryToken()
+                <input type="hidden" asp-for="id_report" value="@ViewBag.ReportGroupId" />
+
+                <div class="modal-header">
+                    <h5 class="modal-title">Ajouter un Report BI</h5>
+                    <button type="button" class="close btn-close-modal"><span>&times;</span></button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label asp-for="id_report_bi">Report BI</label>
+                        @Html.DropDownList("id_report_bi", ViewData["id_report_bi"] as SelectList,
+                        "-- Sélectionnez un Report --", new { @class = "form-control", @id = "id_report_bi" })
+                        <small id="reportPathInfo" class="form-text text-muted mt-1" style="display:none;"></small>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="title"></label>
+                        <input asp-for="title" class="form-control" id="title" />
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="id_web"></label>
+                        <input asp-for="id_web" class="form-control" />
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="report"></label>
+                        <input asp-for="report" class="form-control" />
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="order_report"></label>
+                        <input asp-for="order_report" class="form-control" />
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-close-modal">Annuler</button>
+                    <button type="submit" class="btn btn-success">Enregistrer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    const catalogMap = @Html.Raw(catalogMapJsonSafe);
+
+
+    $(document).on("change", "#id_report_bi", function () {
+        const selectedId = this.value;
+        const titleInput = $("#title");
+        const pathInfo = $("#reportPathInfo");
+        if (catalogMap[selectedId]) {
+            titleInput.val(catalogMap[selectedId].Name);
+            pathInfo.text("Path: /" + catalogMap[selectedId].Path).show();
+        } else {
+            titleInput.val("");
+            pathInfo.hide();
+        }
+    });
+
+
+      $(document).on("shown.bs.modal", "#addReportBIModal", function () {
+        var $m = $(this);
+
+        // Close button logic
+        $m.on("click", ".btn-close-modal", function () {
+            $m.modal("hide");
+        });
+
+        // Cleanup when modal is closed
+        $m.on("hidden.bs.modal", function () {
+            $m.remove();
+        });
+    });
+
+   
+
+
+    
+</script>

@@ -11,34 +11,135 @@
 
         <div class="divider"></div>
 
-        <nav class="navigation-menu">
-            <a asp-controller="BIUsers" asp-action="Index" class="menu-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "BIUser" ? "active" : "")">
-                <div class="active-indicator"></div>
-                <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/30764aa2204f008da2b0384249b8d29ee9ec1be5?placeholderIfAbsent=true&apiKey=099995ce3fec4a6aab6339dc5406b76b" alt="Dashboard" class="menu-icon">
-                <span>Tableau de bord</span>
+        <nav id="navMenu" class="navigation-menu">
+            <a asp-controller="Users" asp-action="Index" class="menu-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "Users" ? "active" : "")">
+                <img src="@(ViewContext.RouteData.Values["controller"]?.ToString() == "Users"
+                                                              ? Url.Content("~/images/icons/users_active.png")
+                                                              : Url.Content("~/images/icons/users.png"))"
+                     alt="Users" class="menu-icon">
+                <span>Utilisateurs BI</span>
             </a>
 
-            <a asp-controller="History" asp-action="Index" class="menu-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "History" ? "active" : "")">
-                <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/3a55506c103eece157564829c37ed9ffde86bfcc?placeholderIfAbsent=true&apiKey=099995ce3fec4a6aab6339dc5406b76b" alt="History" class="menu-icon">
-                <span>Historique</span>
+            <a asp-controller="Reports" asp-action="Index" class="menu-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "Reports" ? "active" : "")">
+                <img src="@(ViewContext.RouteData.Values["controller"]?.ToString() == "Reports"
+                                                              ? Url.Content("~/images/icons/groups_active.png")
+                                                              : Url.Content("~/images/icons/groups.png"))"
+                     alt="Groups" class="menu-icon">
+                <span>Groupe de rapports</span>
             </a>
 
-            <a asp-controller="Statistics" asp-action="Index" class="menu-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "Statistics" ? "active" : "")">
-                <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/371db633b95c658ac6eef3b611a5c46c4b017182?placeholderIfAbsent=true&apiKey=099995ce3fec4a6aab6339dc5406b76b" alt="Statistics" class="menu-icon">
-                <span>Statistiques</span>
+            <a asp-controller="Reports_Reports_BI" asp-action="Index" class="menu-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "Reports_Reports_BI" ? "active" : "")">
+                <img src="@(ViewContext.RouteData.Values["controller"]?.ToString() == "Reports_Reports_BI"
+                                          ? Url.Content("~/images/icons/reports_active.png")
+                                          : Url.Content("~/images/icons/reports.png"))"
+                     alt="Reports" class="menu-icon">
+                <span>Rapports</span>
             </a>
+            <div class="active-indicator" id="slidingIndicator"></div>
         </nav>
+
 
     </div>
 
     <div class="sidebar-footer">
         <div class="divider"></div>
-        <div class="user-profile">
-            <img src="https://img.favpng.com/21/13/5/user-profile-default-computer-icons-network-video-recorder-png-favpng-7dPZA8WRdY80Uw3bdMWkEN4fR.jpg" alt="User Avatar" class="user-avatar">
-            <div class="user-info">
-                <div class="user-name">Bouziani Safae</div>
-                <div class="user-email">safae.bouziani@cegedim.com</div>
-            </div>
+
+        <div class="user-profile dropup">
+            <button type="button"
+                    id="userDropdownToggle"
+                    class="user-profile-toggle dropdown-toggle"
+                    data-bs-toggle="dropdown"
+                    data-bs-display="static"
+                    aria-expanded="false">
+                <img src="https://img.favpng.com/21/13/5/user-profile-default-computer-icons-network-video-recorder-png-favpng-7dPZA8WRdY80Uw3bdMWkEN4fR.jpg"
+                     alt="User Avatar"
+                     class="user-avatar">
+                <div class="user-info ms-2">
+                    <div class="user-name">@User.Identity.Name</div>
+                    <div class="user-email small text-muted">
+                        @User.Claims.FirstOrDefault(c => c.Type == System.Security.Claims.ClaimTypes.Email)?.Value
+                    </div>
+                </div>
+            </button>
+
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdownToggle">
+                <li>
+                    <form asp-controller="Account" asp-action="Logout" method="post" class="px-3 py-1">
+                        @Html.AntiForgeryToken()
+                        <button type="submit" class="dropdown-item text-danger">Logout</button>
+                    </form>
+                </li>
+            </ul>
         </div>
     </div>
+
+
+
 </div>
+<style>
+    /* Ensure the menu can appear above the footer */
+    .sidebar-footer {
+        position: relative;
+        overflow: visible;
+        z-index: 1000;
+    }
+
+    /* If your sidebar container clips children, allow the footer area to overflow */
+    .sidebar {
+        overflow: visible;
+    }
+    /* adjust selector to your layout if needed */
+    .user-profile-toggle {
+        background: none;
+        border: none;
+        display: flex;
+        align-items: center;
+        width: 100%;
+        cursor: pointer;
+    }
+
+    .user-profile {
+        position: relative; /* important for dropdown positioning */
+    }
+
+        .user-profile.dropup .dropdown-menu {
+            transform: none !important; /* remove forced override */
+            bottom: 100%; /* ensure it shows above */
+            top: auto;
+            margin-bottom: 0.5rem; /* small spacing */
+        }
+
+    .user-avatar {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        object-fit: cover;
+    }
+    /* Make sure the dropup positions correctly above the footer */
+
+
+</style>
+<script>
+        window.addEventListener('DOMContentLoaded', () => {
+        const menu = document.getElementById('navMenu');
+        const indicator = document.getElementById('slidingIndicator');
+        const activeItem = menu.querySelector('.menu-item.active');
+
+        if (activeItem) {
+            moveIndicator(activeItem);
+        }
+
+        function moveIndicator(element) {
+            indicator.style.top = element.offsetTop + 'px';
+            indicator.style.height = element.offsetHeight + 'px';
+        }
+    });
+    document.addEventListener('DOMContentLoaded', function () {
+      if (window.bootstrap) {
+        const el = document.getElementById('userDropdownToggle');
+        new bootstrap.Dropdown(el, { popperConfig: { strategy: 'fixed' } });
+      }
+    });
+
+
+</script>

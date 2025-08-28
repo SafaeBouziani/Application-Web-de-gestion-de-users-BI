@@ -1,0 +1,171 @@
+﻿@model UserManagementPBI.ViewModels.CreateUserAjaxViewModel
+@using Microsoft.AspNetCore.Mvc.Rendering
+@{
+    Layout = null; // Partial view returned by AJAX
+    var existingGroups = ViewBag.ExistingGroups as IEnumerable<SelectListItem> ?? Enumerable.Empty<SelectListItem>();
+    var assignedGroups = Model.SelectedExistingGroupIds ?? new List<int>();
+}
+
+<div class="modal fade" id="createUserModal" tabindex="-1" role="dialog" aria-labelledby="createUserModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <form id="create-user-form">
+                @Html.AntiForgeryToken()
+                <div class="modal-header">
+                    <h5 class="modal-title" id="createUserModalLabel">
+                        @(Model.Id == 0 ? "Créer un utilisateur BI — Multi-step" : "Modifier un utilisateur BI — Multi-step")
+                    </h5>
+                    <button type="button" class="close btn-close-modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    <div id="create-user-steps">
+
+                        <!-- Step 1: Basic Info -->
+                        <div class="step-pane" data-step="1">
+                            <h5>Step 1 — User basic info</h5>
+                            <div class="form-group">
+                                <input type="hidden" asp-for="Id" />
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="UserName">Nom d'utilisateur <span class="text-danger">*</span></label>
+                                <input type="text" asp-for="UserName" id="inp-username" class="form-control" />
+                                <div class="invalid-feedback" id="err-username"></div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label asp-for="BIUserRole">Rôle</label>
+                                    <input type="text" asp-for="BIUserRole" id="inp-role" class="form-control" />
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label asp-for="Client">Client <span class="text-danger">*</span></label>
+                                    <input type="text" asp-for="Client" id="inp-client" class="form-control" />
+                                    <div class="invalid-feedback" id="err-client"></div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Mail">Email <span class="text-danger">*</span></label>
+                                <input type="email" asp-for="Mail" id="inp-mail" class="form-control" />
+                                <div class="invalid-feedback" id="err-mail"></div>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="View_user">ViewUser</label>
+                                <input type="text" asp-for="View_user" id="inp-viewuser" class="form-control" />
+                            </div>
+                        </div>
+
+                        <!-- Step 2: Select existing groups (+ quick-add new group) -->
+                        <div class="step-pane d-none" data-step="2">
+                            <h5>Etape 2 — Assigner des groupes existants ou en ajouter</h5>
+                            <div class="form-group">
+                                <label>Groupes Existants (Ctrl+click to multi-select)</label>
+                                    <select id="existing-groups" class="form-control" multiple size="6">
+                                        @foreach (var g in ViewBag.ExistingGroups as List<SelectListItem>)
+                                        {
+                                            var selected = assignedGroups.Contains(int.Parse(g.Value)) ? "selected" : "";
+                                        <option value="@g.Value" selected="@(Model.SelectedExistingGroupIds.Contains(int.Parse(g.Value)) ? "selected" : null)">
+                                            @g.Text
+                                        </option>
+                                    }
+                                    </select>
+                            </div>
+
+                            <hr />
+                            <h6>Ajouter un nouveau groupe (créer un espace réservé que vous pourrez modifier à l’étape 3)</h6>
+                            <div class="form-inline mb-2">
+                                <input id="quick-new-group-title" class="form-control mr-2" placeholder="titre" />
+                                <button type="button" class="btn btn-outline-primary" id="btn-add-quick-group">Ajouter nouveau groupe</button>
+                            </div>
+
+                            <div id="quick-new-groups-list" class="mt-2"></div>
+                        </div>
+
+                        <!-- Step 3: Create / edit new groups (title, comment, dynamic reports) -->
+                        <div class="step-pane d-none" data-step="3">
+                            <h5>Etape 3 — Nouveaux groupes et leur rapports</h5>
+                            <div>
+                                <button type="button" class="btn btn-sm btn-primary mb-2" id="btn-add-group">Ajouter nouveau groupe</button>
+                            </div>
+
+                            <div id="new-groups-container">
+                                <!-- JS will populate new groups panels here -->
+                            </div>
+                        </div>
+
+                        <!-- Step 4: Summary & submit -->
+                        <div class="step-pane d-none" data-step="4">
+                            <h5>Step 4 — Résumé</h5>
+                            <div id="summary-content" style="max-height: 360px; overflow:auto; border: 1px solid #eee; padding:10px; border-radius:4px;"></div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <div class="mr-auto">
+                        <small class="text-muted">Step <span id="current-step-label">1</span> / 4</small>
+                    </div>
+
+                    <button type="button" class="btn btn-secondary btn-prev d-none">Précédent</button>
+                    <button type="button" class="btn btn-primary btn-next">Suivant</button>
+                    <button type="button" class="btn btn-success btn-submit d-none">
+                        Enregistrer
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* minimal styles so the partial looks acceptable without extra assets */
+    .step-pane {
+        padding: 6px 0;
+    }
+
+    .group-panel {
+        border: 1px dashed #ddd;
+        padding: 10px;
+        margin-bottom: 8px;
+        border-radius: 4px;
+        background: #fafafa;
+    }
+
+    .report-row {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        margin-bottom: 6px;
+    }
+
+    .report-row input {
+        flex: 1;
+    }
+
+    .btn-small {
+        padding: .25rem .5rem;
+        font-size: .8rem;
+    }
+</style>
+
+@{
+    var catalogMapJson = Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.CatalogMap);
+}
+
+
+
+<script>
+    window.__assignedGroupIds = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(assignedGroups));
+    window.__catalogMap = @Html.Raw(catalogMapJson);
+    // small inline to trigger the modal show after the partial is appended
+    $(function(){
+      var $m = $('#createUserModal');
+      $m.modal({ backdrop: 'static', keyboard: false });
+      $m.on('hidden.bs.modal', function () {
+        // when modal hidden, remove from DOM (requirement 7)
+        $(this).remove();
+      });
+    });
+</script>

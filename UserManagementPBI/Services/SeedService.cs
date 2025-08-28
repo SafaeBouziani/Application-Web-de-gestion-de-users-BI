@@ -2,6 +2,7 @@
 using CsvHelper.Configuration.Attributes;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.EntityFrameworkCore;
 using System.Globalization;
 using System.Security.Cryptography;
 using UserManagementPBI.Data;  
@@ -24,8 +25,7 @@ namespace UserManagementPBI.Services
 
                 try
                 {
-                    logger.LogInformation("Creating database...");
-                    await dbContext.Database.EnsureCreatedAsync();
+                    //await dbContext.Database.MigrateAsync();
 
                     logger.LogInformation("Seeding Roles...");
                     await AddRoleAsync(roleManager, "Admin");
@@ -34,6 +34,10 @@ namespace UserManagementPBI.Services
                     logger.LogInformation("Seeding Admin Users from CSV...");
                     string csvFilePath = @"C:\Users\$wagger\Desktop\UserManagementPBI\UserManagementPBI\Data\allowed users.csv";
                     await SeedAdminUsersFromCsvAsync(csvFilePath, userManager, roleManager, logger, emailSender);
+
+                    logger.LogInformation("Seeding Catalogs...");
+                    await SeedCatalogAsync(dbContext, logger);
+
 
 
                 }
@@ -51,6 +55,13 @@ namespace UserManagementPBI.Services
                 var role = new IdentityRole(roleName);
                 await roleManager.CreateAsync(role);
             }
+        }
+
+        private class AdminUserCsv
+        {
+            [Name("Full Name")]
+            public string FullName { get; set; }
+            public string Email { get; set; }
         }
 
         private static async Task SeedAdminUsersFromCsvAsync(
@@ -183,12 +194,52 @@ namespace UserManagementPBI.Services
         }
 
 
-        private class AdminUserCsv
+        private static async Task SeedCatalogAsync(ApplicationDbContext dbContext, ILogger logger)
         {
-            [Name("Full Name")]
-            public string FullName { get; set; }
-            public string Email { get; set; }
+            if (await dbContext.Catalog.AnyAsync())
+            {
+                logger.LogInformation("Catalog already seeded.");
+                return;
+            }
+
+            var catalogItems = new List<Catalog>
+            {
+                new Catalog
+                {
+                    ItemID = Guid.NewGuid(),
+                    Path = "/root/report1",
+                    Name = "Sales Report",
+                    Type = 1, // You can define this meaning later (e.g., folder = 0, report = 1)
+                    CreatedByID = Guid.NewGuid(),
+                    CreationDate = DateTime.UtcNow,
+                    ModifiedByID = Guid.NewGuid(),
+                    ModifiedDate = DateTime.UtcNow,
+                    PolicyID = Guid.NewGuid(),
+                    PolicyRoot = true,
+                    ExecutionFlag = 0
+                },
+                new Catalog
+                {
+                    ItemID = Guid.NewGuid(),
+                    Path = "/root/dashboard1",
+                    Name = "Marketing Dashboard",
+                    Type = 1,
+                    CreatedByID = Guid.NewGuid(),
+                    CreationDate = DateTime.UtcNow,
+                    ModifiedByID = Guid.NewGuid(),
+                    ModifiedDate = DateTime.UtcNow,
+                    PolicyID = Guid.NewGuid(),
+                    PolicyRoot = false,
+                    ExecutionFlag = 1
+                }
+            };
+
+            await dbContext.Catalog.AddRangeAsync(catalogItems);
+            await dbContext.SaveChangesAsync();
+
+            logger.LogInformation("Catalog items seeded.");
         }
+
     }
 
 

@@ -12,8 +12,8 @@ using UserManagementPBI.Data;
 namespace UserManagementPBI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250804233138_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20250814230620_AddIsActiveToUsers")]
+    partial class AddIsActiveToUsers
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -227,6 +227,146 @@ namespace UserManagementPBI.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("UserManagementPBI.Models.Catalog", b =>
+                {
+                    b.Property<Guid>("ItemID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("ComponentID")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<byte[]>("Content")
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<long?>("ContentSize")
+                        .HasColumnType("bigint");
+
+                    b.Property<Guid>("CreatedByID")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ExecutionFlag")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("ExecutionTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool?>("Hidden")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid?>("Intermediate")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("LinkSourceID")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("MimeType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("ModifiedByID")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("ModifiedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Parameter")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("ParentID")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Path")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("PolicyID")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("PolicyRoot")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Property")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("SnapshotDataID")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int?>("SnapshotLimit")
+                        .HasColumnType("int");
+
+                    b.Property<string>("SubType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
+                    b.HasKey("ItemID");
+
+                    b.ToTable("Catalog");
+                });
+
+            modelBuilder.Entity("UserManagementPBI.Models.Reports", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
+
+                    b.Property<string>("commentaire")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("title")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("Reports");
+                });
+
+            modelBuilder.Entity("UserManagementPBI.Models.Reports_Reports_BI", b =>
+                {
+                    b.Property<int>("ID_Reports_Reports_BI")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID_Reports_Reports_BI"));
+
+                    b.Property<int>("id_report")
+                        .HasColumnType("int");
+
+                    b.Property<string>("id_report_bi")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("id_web")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("order_report")
+                        .HasColumnType("int");
+
+                    b.Property<byte[]>("report")
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<string>("title")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ID_Reports_Reports_BI");
+
+                    b.HasIndex("id_report");
+
+                    b.ToTable("Reports_Reports_BI");
+                });
+
             modelBuilder.Entity("UserManagementPBI.Models.Users", b =>
                 {
                     b.Property<int>("ID")
@@ -235,11 +375,8 @@ namespace UserManagementPBI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
 
-                    b.Property<string>("AdminsId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<string>("CreatedByAdminId")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("DateCreation")
                         .HasColumnType("datetime2");
@@ -252,6 +389,9 @@ namespace UserManagementPBI.Migrations
 
                     b.Property<int>("failed_times")
                         .HasColumnType("int");
+
+                    b.Property<bool>("is_active")
+                        .HasColumnType("bit");
 
                     b.Property<DateTime?>("last_failed_utc_datetime")
                         .HasColumnType("datetime2");
@@ -273,9 +413,27 @@ namespace UserManagementPBI.Migrations
 
                     b.HasKey("ID");
 
-                    b.HasIndex("AdminsId");
+                    b.HasIndex("CreatedByAdminId");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("UserManagementPBI.Models.Users_Reports", b =>
+                {
+                    b.Property<int>("id_users")
+                        .HasColumnType("int");
+
+                    b.Property<int>("id_reports")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("order_report")
+                        .HasColumnType("int");
+
+                    b.HasKey("id_users", "id_reports");
+
+                    b.HasIndex("id_reports");
+
+                    b.ToTable("Users_Reports");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -329,16 +487,61 @@ namespace UserManagementPBI.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("UserManagementPBI.Models.Reports_Reports_BI", b =>
+                {
+                    b.HasOne("UserManagementPBI.Models.Reports", "ReportGroup")
+                        .WithMany("ReportsBIs")
+                        .HasForeignKey("id_report")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("ReportGroup");
+                });
+
             modelBuilder.Entity("UserManagementPBI.Models.Users", b =>
                 {
-                    b.HasOne("UserManagementPBI.Models.Admins", null)
+                    b.HasOne("UserManagementPBI.Models.Admins", "CreatedByAdmin")
                         .WithMany("Users")
-                        .HasForeignKey("AdminsId");
+                        .HasForeignKey("CreatedByAdminId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.Navigation("CreatedByAdmin");
+                });
+
+            modelBuilder.Entity("UserManagementPBI.Models.Users_Reports", b =>
+                {
+                    b.HasOne("UserManagementPBI.Models.Reports", "Report")
+                        .WithMany("UsersReports")
+                        .HasForeignKey("id_reports")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("UserManagementPBI.Models.Users", "User")
+                        .WithMany("UsersReports")
+                        .HasForeignKey("id_users")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Report");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("UserManagementPBI.Models.Admins", b =>
                 {
                     b.Navigation("Users");
+                });
+
+            modelBuilder.Entity("UserManagementPBI.Models.Reports", b =>
+                {
+                    b.Navigation("ReportsBIs");
+
+                    b.Navigation("UsersReports");
+                });
+
+            modelBuilder.Entity("UserManagementPBI.Models.Users", b =>
+                {
+                    b.Navigation("UsersReports");
                 });
 #pragma warning restore 612, 618
         }

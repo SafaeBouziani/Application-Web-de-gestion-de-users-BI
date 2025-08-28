@@ -1,10 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-
-namespace UserManagementPBI.Models
+﻿namespace UserManagementPBI.ViewModels
 {
-    public class Reports_Reports_BI
+    public class ReportsReportsBIFormViewModel
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ID_Reports_Reports_BI { get; set; }
         public string? id_report_bi { get; set; }
         public string? title { get; set; }
@@ -12,8 +9,5 @@ namespace UserManagementPBI.Models
         public int id_report { get; set; }
         public byte[]? report { get; set; }
         public int? order_report { get; set; }
-        public bool is_active { get; set; } = true;
-
-        public Reports ReportGroup { get; set; }
     }
 }

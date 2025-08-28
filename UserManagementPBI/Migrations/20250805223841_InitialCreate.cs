@@ -52,6 +52,56 @@ namespace UserManagementPBI.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Catalog",
+                columns: table => new
+                {
+                    ItemID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Path = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ParentID = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    Type = table.Column<int>(type: "int", nullable: false),
+                    Content = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
+                    Intermediate = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    SnapshotDataID = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    LinkSourceID = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    Property = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Hidden = table.Column<bool>(type: "bit", nullable: true),
+                    CreatedByID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ModifiedByID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    MimeType = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    SnapshotLimit = table.Column<int>(type: "int", nullable: true),
+                    Parameter = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PolicyID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    PolicyRoot = table.Column<bool>(type: "bit", nullable: false),
+                    ExecutionFlag = table.Column<int>(type: "int", nullable: false),
+                    ExecutionTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    SubType = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ComponentID = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    ContentSize = table.Column<long>(type: "bigint", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Catalog", x => x.ItemID);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Reports",
+                columns: table => new
+                {
+                    ID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    title = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    commentaire = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Reports", x => x.ID);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
@@ -173,17 +223,65 @@ namespace UserManagementPBI.Migrations
                     failed_times = table.Column<int>(type: "int", nullable: false),
                     DateCreation = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DateModification = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    CreatedByAdminId = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    AdminsId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    CreatedByAdminId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Users", x => x.ID);
                     table.ForeignKey(
-                        name: "FK_Users_AspNetUsers_AdminsId",
-                        column: x => x.AdminsId,
+                        name: "FK_Users_AspNetUsers_CreatedByAdminId",
+                        column: x => x.CreatedByAdminId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Reports_Reports_BI",
+                columns: table => new
+                {
+                    ID_Reports_Reports_BI = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    id_report_bi = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    title = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    id_web = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    id_report = table.Column<int>(type: "int", nullable: false),
+                    report = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
+                    order_report = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Reports_Reports_BI", x => x.ID_Reports_Reports_BI);
+                    table.ForeignKey(
+                        name: "FK_Reports_Reports_BI_Reports_id_report",
+                        column: x => x.id_report,
+                        principalTable: "Reports",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Users_Reports",
+                columns: table => new
+                {
+                    id_users = table.Column<int>(type: "int", nullable: false),
+                    id_reports = table.Column<int>(type: "int", nullable: false),
+                    order_report = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Users_Reports", x => new { x.id_users, x.id_reports });
+                    table.ForeignKey(
+                        name: "FK_Users_Reports_Reports_id_reports",
+                        column: x => x.id_reports,
+                        principalTable: "Reports",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Users_Reports_Users_id_users",
+                        column: x => x.id_users,
+                        principalTable: "Users",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -226,9 +324,19 @@ namespace UserManagementPBI.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Users_AdminsId",
+                name: "IX_Reports_Reports_BI_id_report",
+                table: "Reports_Reports_BI",
+                column: "id_report");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_CreatedByAdminId",
                 table: "Users",
-                column: "AdminsId");
+                column: "CreatedByAdminId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_Reports_id_reports",
+                table: "Users_Reports",
+                column: "id_reports");
         }
 
         /// <inheritdoc />
@@ -250,10 +358,22 @@ namespace UserManagementPBI.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Users");
+                name: "Catalog");
+
+            migrationBuilder.DropTable(
+                name: "Reports_Reports_BI");
+
+            migrationBuilder.DropTable(
+                name: "Users_Reports");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "Reports");
+
+            migrationBuilder.DropTable(
+                name: "Users");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

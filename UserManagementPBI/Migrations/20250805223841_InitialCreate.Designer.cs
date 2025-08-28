@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using UserManagementPBI.Data;
 
@@ -11,9 +12,11 @@ using UserManagementPBI.Data;
 namespace UserManagementPBI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250805223841_InitialCreate")]
+    partial class InitialCreate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -323,9 +326,6 @@ namespace UserManagementPBI.Migrations
                     b.Property<string>("commentaire")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("is_active")
-                        .HasColumnType("bit");
-
                     b.Property<string>("title")
                         .HasColumnType("nvarchar(max)");
 
@@ -350,9 +350,6 @@ namespace UserManagementPBI.Migrations
 
                     b.Property<string>("id_web")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("is_active")
-                        .HasColumnType("bit");
 
                     b.Property<int?>("order_report")
                         .HasColumnType("int");
@@ -392,9 +389,6 @@ namespace UserManagementPBI.Migrations
 
                     b.Property<int>("failed_times")
                         .HasColumnType("int");
-
-                    b.Property<bool>("is_active")
-                        .HasColumnType("bit");
 
                     b.Property<DateTime?>("last_failed_utc_datetime")
                         .HasColumnType("datetime2");

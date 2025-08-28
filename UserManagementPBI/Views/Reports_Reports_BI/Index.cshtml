@@ -1,8 +1,7 @@
-﻿@model IEnumerable<UserManagementPBI.Models.Users>
-@{
-    ViewData["Title"] = "Dashboard";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+﻿@model IEnumerable<UserManagementPBI.Models.Reports_Reports_BI>
 
+@{
+    ViewData["Title"] = "Index";
 }
 
 
@@ -25,8 +24,8 @@
 
         <!-- Section Header -->
         <div class="section-header">
-            <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/53da30b81543d43962b9d4857e9dcaad032d1f08?placeholderIfAbsent=true&apiKey=099995ce3fec4a6aab6339dc5406b76b" alt="Users" class="section-icon">
-            <h1 class="section-title">Utilisateurs BI</h1>
+            <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/53da30b81543d43962b9d4857e9dcaad032d1f08?placeholderIfAbsent=true&apiKey=099995ce3fec4a6aab6339dc5406b76b" alt="Groups" class="section-icon">
+            <h1 class="section-title">Rapports BI</h1>
             <div class="search-bar">
                 <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/175e372235aefe1ea6e66cd6d93728050cfd075c?placeholderIfAbsent=true&apiKey=099995ce3fec4a6aab6339dc5406b76b" alt="Search" class="search-bar-icon">
                 <input type="text" placeholder="Recherche" class="search-input">
@@ -59,9 +58,9 @@
                         <li class="dropdown-submenu">
                             <a class="dropdown-item" href="#">Par statut     ▶</a>
                             <ul class="dropdown-menu submenu">
-                                <li><a class="dropdown-item" href="/Users/Index">Actifs</a></li>
-                                <li><a class="dropdown-item" href="/Users/IndexInactivated">Inactifs</a></li>
-                                <li><a class="dropdown-item" href="/Users/IndexAll">Tous</a></li>
+                                <li><a class="dropdown-item" href="/Reports_Reports_BI/Index">Actifs</a></li>
+                                <li><a class="dropdown-item" href="/Reports_Reports_BI/IndexInactivated">Inactifs</a></li>
+                                <li><a class="dropdown-item" href="/Reports_Reports_BI/IndexAll">Tous</a></li>
                             </ul>
                         </li>
                     </ul>
@@ -69,7 +68,7 @@
 
             </div>
             <div class="filter-right">
-                <button id="btn-open-create-user" class="action-button primary" type="button">
+                <button id="btn-open-create-group" class="action-button primary" type="button">
                     <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/376f640a2a3a1aac147f0da3520427fa0abb8973?placeholderIfAbsent=true&apiKey=099995ce3fec4a6aab6339dc5406b76b" alt="Plus" class="action-icon">
                     <span>Nouveau</span>
                 </button>
@@ -93,27 +92,27 @@
                             <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/7c215a276d945185c56ecd3514506bd6ce90d21d?placeholderIfAbsent=true&apiKey=099995ce3fec4a6aab6339dc5406b76b" alt="Sort" class="sort-icon">
                         </th>
                         <th class="sortable">
-                            <span>Utilisateur</span>
+                            <span>Power BI ID</span>
                             <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/7c215a276d945185c56ecd3514506bd6ce90d21d?placeholderIfAbsent=true&apiKey=099995ce3fec4a6aab6339dc5406b76b" alt="Sort" class="sort-icon">
                         </th>
                         <th class="sortable">
-                            <span>Client</span>
+                            <span>Titre</span>
                             <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/7c215a276d945185c56ecd3514506bd6ce90d21d?placeholderIfAbsent=true&apiKey=099995ce3fec4a6aab6339dc5406b76b" alt="Sort" class="sort-icon">
                         </th>
                         <th class="sortable">
-                            <span>Date de création</span>
+                            <span>ID Web</span>
                             <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/7c215a276d945185c56ecd3514506bd6ce90d21d?placeholderIfAbsent=true&apiKey=099995ce3fec4a6aab6339dc5406b76b" alt="Sort" class="sort-icon">
                         </th>
                         <th class="sortable">
-                            <span>Role</span>
+                            <span>Report</span>
                             <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/7c215a276d945185c56ecd3514506bd6ce90d21d?placeholderIfAbsent=true&apiKey=099995ce3fec4a6aab6339dc5406b76b" alt="Sort" class="sort-icon">
                         </th>
                         <th class="sortable">
-                            <span>Email</span>
+                            <span>Ordre</span>
                             <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/7c215a276d945185c56ecd3514506bd6ce90d21d?placeholderIfAbsent=true&apiKey=099995ce3fec4a6aab6339dc5406b76b" alt="Sort" class="sort-icon">
                         </th>
                         <th class="sortable">
-                            <span>Mot de passe</span>
+                            <span>Groupe</span>
                             <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/7c215a276d945185c56ecd3514506bd6ce90d21d?placeholderIfAbsent=true&apiKey=099995ce3fec4a6aab6339dc5406b76b" alt="Sort" class="sort-icon">
                         </th>
                         <th class="sortable">
@@ -131,13 +130,22 @@
                     {
                         <tr class="table-row">
                             <td><input type="checkbox" class="table-checkbox"></td>
-                            <td>@Html.DisplayFor(m => item.ID)</td>
-                            <td>@Html.DisplayFor(m => item.userName)</td>
-                            <td>@Html.DisplayFor(m => item.client)</td>
-                            <td>@Html.DisplayFor(m => item.DateCreation)</td>
-                            <td>@Html.DisplayFor(m => item.role)</td>
-                            <td>@Html.DisplayFor(m => item.mail)</td>
-                            <td>@Html.DisplayFor(m => item.pwd)</td>
+                            <td>@Html.DisplayFor(m => item.ID_Reports_Reports_BI)</td>
+                            <td>@Html.DisplayFor(m => item.id_report_bi)</td>
+                            <td>@Html.DisplayFor(m => item.title)</td>
+                            <td>@Html.DisplayFor(m => item.id_web)</td>
+                            <td>@Html.DisplayFor(m => item.report)</td>
+                            <td>@Html.DisplayFor(m => item.order_report)</td>
+                            <td>
+                                @if (item.ReportGroup != null)
+                                {
+                                    @Html.DisplayFor(m => item.ReportGroup.title)
+                                }
+                                else
+                                {
+                                    <span class="badge badge-secondary">Aucun groupe</span>
+                                }
+                            </td>
                             <td>
                                 @if (item.is_active)
                                 {
@@ -150,14 +158,14 @@
                             </td>
                             <td class="action-cell">
                                 @if (item.is_active)
-                                {                                  
-                                    <a href="#" class="edit-button" data-id="@item.ID">Modifier</a> 
-                                    <a asp-action="Details" asp-route-id="@item.ID">Details</a> 
-                                    <a href="#" class="delete-button" data-id="@item.ID">Supprimer</a>
+                                {
+                                    <a href="#" class="edit-button" data-id="@item.ID_Reports_Reports_BI">Modifier</a>
+                                    <a href="#" class="view-button" data-id="@item.ID_Reports_Reports_BI">Details</a>
+                                    <a href="#" class="delete-button" data-id="@item.ID_Reports_Reports_BI">Supprimer</a>
                                 }
                                 else
                                 {
-                                    <form asp-action="Activate" asp-route-id="@item.ID" method="post" style="display:inline;">
+                                    <form asp-action="Activate" asp-route-id="@item.ID_Reports_Reports_BI" method="post" style="display:inline;">
                                         <button type="submit" class="restore-button">Restaurer</button>
                                     </form>
 
@@ -225,48 +233,62 @@
 
 </style>
 @section Scripts {
-    <script src="~/js/users-modal.js" asp-append-version="true"></script>
+    <script src="~/js/groups-modal.js" asp-append-version="true"></script>
     <script>
         // click handler to fetch & append the modal partial
         $(function () {
-          $('#btn-open-create-user').on('click', function () {
-            $.get('/Users/CreateModal')
+          $('#btn-open-create-group').on('click', function () {
+            $.get('/Reports_Reports_BI/Create')
               .done(function (html) {
                 $('body').append(html);
                 // show is handled in the partial inline script, but ensure shown bootstrapping if needed
-                $('#createUserModal').modal('show');
+                $('#createReportBIModal').modal('show');
               })
               .fail(function () {
-                alert('Failed to load create-user form. Refresh and try again.');
+                alert('Failed to load create-report form. Refresh and try again.');
               });
           });
         });
         $(document).on('click', '.edit-button', function (e) {
             e.preventDefault(); // stop the browser following the link
 
-            var userId = $(this).data('id');
+            var reportId = $(this).data('id');
 
-            $.get('/Users/EditModal', { id: userId })
+            $.get('/Reports_Reports_BI/Edit', { id: reportId })
                 .done(function (html) {
                     $('body').append(html);
-                    $('#createUserModal').modal('show');
+                    $('#editReportBIModal').modal('show');
                 })
                 .fail(function () {
-                    alert('Failed to load edit-user form. Refresh and try again.');
+                    alert('Failed to load edit-report form. Refresh and try again.');
                 });
         });
         $(document).on('click', '.delete-button', function (e) {
             e.preventDefault(); // stop the browser following the link
 
-            var userId = $(this).data('id');
+            var reportId = $(this).data('id');
 
-            $.get('/Users/Delete', { id: userId })
+            $.get('/Reports_Reports_BI/Delete', { id: reportId })
                 .done(function (html) {
                     $('body').append(html);
-                    $('#deleteUserModal').modal('show');
+                    $('#deleteReportItemModal').modal('show');
                 })
                 .fail(function () {
-                    alert('Failed to load delete-user form. Refresh and try again.');
+                    alert('Failed to load delete-report form. Refresh and try again.');
+                });
+        });
+        $(document).on('click', '.view-button', function (e) {
+            e.preventDefault(); // stop the browser following the link
+
+            var reportId = $(this).data('id');
+
+            $.get('/Reports_Reports_BI/Details', { id: reportId })
+                .done(function (html) {
+                    $('body').append(html);
+                    $('#detailsReportBIModal').modal('show');
+                })
+                .fail(function () {
+                    alert('Failed to load details-report form. Refresh and try again.');
                 });
         });
         $(document).ready(function () {

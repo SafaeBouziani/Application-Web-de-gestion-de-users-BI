@@ -1,0 +1,186 @@
+﻿@model UserManagementPBI.Models.Reports
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<div class="dashboard">
+    <div class="main-content">
+        <!-- Page Header -->
+        <div class="page-header">
+            <div class="breadcrumbs">
+                <div class="breadcrumb-item">
+                    <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/fcb3bc0414eccce6fe1385a220fa3858e67e605b?placeholderIfAbsent=true&apiKey=099995ce3fec4a6aab6339dc5406b76b" alt="Home" class="breadcrumb-icon">
+                    <span>Tableau de bord</span>
+                </div>
+                <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/4c8200eba9cded5f68650867b7773fea977f1234?placeholderIfAbsent=true&apiKey=099995ce3fec4a6aab6339dc5406b76b" alt="Arrow" class="breadcrumb-arrow">
+            </div>
+            <div class="header-divider"></div>
+        </div>
+
+        <!-- Section Header -->
+        <div class="section-header">
+            <a asp-action="Index">
+                <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/53da30b81543d43962b9d4857e9dcaad032d1f08?placeholderIfAbsent=true&apiKey=099995ce3fec4a6aab6339dc5406b76b" alt="Users" class="section-icon">
+            </a>
+            <h1 class="section-title">Groupe de Rapports BI</h1>
+            <div class="section-divider"></div>
+        </div>
+
+        <div class="data-content1">
+            <div class="section-header">
+                <h1 class="data-section-header1">@Model.title</h1>
+            </div>
+
+            <div class="pagination-section1"></div>
+
+            <div class="tables-container1">
+                <!-- Reports Table -->
+                <div class="table-card1 reports-table1">
+                    <div class="card-header1">
+                        <h3>Liste des rapports</h3>
+                    </div>
+                    <div class="table-header1">
+                        <div class="table-header-cell1">
+                            <div class="header-content1">
+                                <span>ID RAPPORT</span>
+                            </div>
+                            <div class="separator1"></div>
+                        </div>
+                        <div class="table-header-cell1">
+                            <div class="header-content1">
+                                <span>TITRE</span>
+                            </div>
+                            <div class="separator1"></div>
+                        </div>
+                        <div class="table-header-cell1">
+                            <div class="header-content1">
+                                <span>ORDRE</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    @if (Model.ReportsBIs != null && Model.ReportsBIs.Any())
+                    {
+                        @foreach (var rep in Model.ReportsBIs)
+                        {
+                            <div class="table-row1">
+                                <div class="table-header-cell1">@rep.ID_Reports_Reports_BI</div>
+                                <div class="table-header-cell1">@rep.title</div>
+                                <div class="table-header-cell1">@rep.order_report</div>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <div class="table-row1">
+                            <div class="table-header-cell1" colspan="3">Aucun rapport assigné</div>
+                        </div>
+                    }
+                </div>
+
+                <!-- Add Reports Button -->
+                <button class="add-button1 reports-add1">
+                    <svg width="85" height="85" viewBox="0 0 85 85" xmlns="http://www.w3.org/2000/svg">
+                        <g transform="rotate(45 42.5 42.5)">
+                            <rect x="40" y="20" width="5" height="45" fill="#71C0E8" />
+                            <rect x="20" y="40" width="45" height="5" fill="#71C0E8" />
+                        </g>
+                    </svg>
+                </button>
+
+                <!-- Users Table -->
+                <div class="table-card1 users-table1">
+                    <div class="card-header1">
+                        <h3>Liste des utilisateurs</h3>
+                    </div>
+                    <div class="table-header1">
+                        <div class="table-header-cell1">
+                            <div class="header-content1"><span>NOM D'UTILISATEUR</span></div>
+                            <div class="separator1"></div>
+                        </div>
+                        <div class="table-header-cell1">
+                            <div class="header-content1"><span>EMAIL</span></div>
+                            <div class="separator1"></div>
+                        </div>
+                        <div class="table-header-cell1">
+                            <div class="header-content1"><span>CLIENT</span></div>
+                            <div class="separator1"></div>
+                        </div>
+                        <div class="table-header-cell1">
+                            <div class="header-content1"><span>ROLE</span></div>
+                        </div>
+                    </div>
+
+                    @if (Model.UsersReports != null && Model.UsersReports.Any())
+                    {
+                        @foreach (var ur in Model.UsersReports)
+                        {
+                            <div class="table-row1">
+                                <div class="table-header-cell1">@ur.User.userName</div>
+                                <div class="table-header-cell1">@ur.User.mail</div>
+                                <div class="table-header-cell1">@ur.User.client</div>
+                                <div class="table-header-cell1">@ur.User.role</div>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <div class="table-row1">
+                            <div class="table-header-cell1" colspan="4">Aucun utilisateur assigné</div>
+                        </div>
+                    }
+                </div>
+
+                <!-- Add Users Button -->
+                <button class="add-button1 users-add1">
+                    <svg width="85" height="85" viewBox="0 0 85 85" xmlns="http://www.w3.org/2000/svg">
+                        <g transform="rotate(45 42.5 42.5)">
+                            <rect x="40" y="20" width="5" height="45" fill="#71C0E8" />
+                            <rect x="20" y="40" width="45" height="5" fill="#71C0E8" />
+                        </g>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+<script>
+    $(function () {
+        // Handle Add Report Button
+        $(".reports-add1").on("click", function () {
+            const groupId = @Model.ID;
+            $.get("/Reports/GetAddReportBIModal/" + groupId, function (html) {
+                $("body").append(html);
+                $("#addReportBIModal").modal("show");
+            });
+        });
+
+        // Handle Add User Button
+        $(".users-add1").on("click", function () {
+            const groupId = @Model.ID;
+            $.get("/Reports/GetAddUserModal/" + groupId, function (html) {
+                $("body").append(html);
+                $("#AddUserModal").modal("show");
+            });
+        });
+
+        // Submit Report BI form via AJAX
+        $(document).on("submit", "#add-reportbi-form", function (e) {
+            e.preventDefault();
+            $.post($(this).attr("action"), $(this).serialize(), function (res) {
+                if (res.success) location.reload();
+            });
+        });
+
+        // Submit User form via AJAX
+        $(document).on("submit", "#add-user-form", function (e) {
+            e.preventDefault();
+            $.post($(this).attr("action"), $(this).serialize(), function (res) {
+                if (res.success) location.reload();
+            });
+        });
+    });
+</script>
+}

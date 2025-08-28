@@ -1,0 +1,322 @@
+﻿@model UserManagementPBI.ViewModels.GroupCreateViewModel
+@using Newtonsoft.Json
+
+
+@{
+    Layout = null; // This is a partial rendered via AJAX
+    var usersMap = ViewBag.UsersMap as Dictionary<int, string> ?? new Dictionary<int, string>();
+}
+
+<div class="modal fade" id="EditReportModal" tabindex="-1" role="dialog" aria-labelledby="EditReportModalLabel" aria-hidden="true"
+     data-reports='@Html.Raw(JsonConvert.SerializeObject(Model.Reports))'
+     data-selectedusers='@Html.Raw(JsonConvert.SerializeObject(Model.SelectedExistingUserIds))'
+     data-users='@Html.Raw(JsonConvert.SerializeObject(usersMap))'>
+    <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title" id="EditReportModalLabel">Edit Group (@Model.Id)</h5>
+                <button type="button" class="close btn-close-modal" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+
+            <div class="modal-body">
+                <form id="edit-group-form" method="post" style="display:none;">
+                    @Html.AntiForgeryToken()
+                </form>
+
+                <input type="hidden" id="group-id" value="@Model.Id" />
+
+                <div class="form-group">
+                    <label for="group-title">Title</label>
+                    <input type="text" class="form-control" id="group-title" value="@Model.Title" />
+                </div>
+
+                <div class="form-group">
+                    <label for="group-comment">Comment</label>
+                    <textarea class="form-control" id="group-comment" rows="2">@Model.Comment</textarea>
+                </div>
+
+                <hr class="my-3" />
+
+                <div class="form-group">
+                    <label for="user-select">Users</label>
+                    <select id="user-select" multiple class="form-control"></select>
+                    <small class="form-text text-muted">Search and select users to include in this group.</small>
+                </div>
+
+                <hr class="my-3" />
+
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <h6 class="mb-0">Reports</h6>
+                    <button type="button" class="btn btn-sm btn-primary" id="btn-add-report">Add Report</button>
+                </div>
+
+                <div id="reports-list"></div>
+
+                <style>
+                    #reports-list .report-row {
+                        border: 1px solid #e9ecef;
+                        border-radius: .5rem;
+                        padding: .75rem;
+                        margin-bottom: .75rem;
+                        background: #fafafa;
+                    }
+                    #reports-list .report-row .form-row > [class*="col-"] {
+                        margin-bottom: .5rem;
+                    }
+                </style>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-close-modal" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-success" id="btn-save-edit">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+(function () {
+    // Scoped to this partial/modal
+    var $m = $('#EditReportModal');
+    var choicesInstance = null;
+
+    // Defensive: destroy Choices instance if modal is removed
+    function destroyChoices() {
+        try {
+            if (choicesInstance && typeof choicesInstance.destroy === 'function') {
+                choicesInstance.destroy();
+            }
+        } catch (e) { /* noop */ }
+        choicesInstance = null;
+    }
+
+    // Local UI state
+    var state = {
+        reports: [],
+        usersMap: {},
+        selectedUserIds: []
+    };
+
+    // Render a single report row
+    function renderReportRow(r, index) {
+        var rid = 'report-row-' + index;
+        return [
+            '<div class="report-row" data-index="', index, '">',
+            '  <div class="form-row">',
+            '    <div class="col-md-4">',
+            '      <label>Title</label>',
+            '      <input type="text" class="form-control rpt-title" value="', (r.Title || ''), '"/>',
+            '    </div>',
+            '    <div class="col-md-4">',
+            '      <label>BI Id</label>',
+            '      <input type="text" class="form-control rpt-id" value="', (r.Id || ''), '"/>',
+            '    </div>',
+            '    <div class="col-md-4">',
+            '      <label>Web Id</label>',
+            '      <input type="text" class="form-control rpt-idweb" value="', (r.IdWeb || ''), '"/>',
+            '    </div>',
+            '  </div>',
+            '  <div class="form-row">',
+            '    <div class="col-md-2">',
+            '      <label>Order</label>',
+            '      <input type="number" class="form-control rpt-order" value="', (r.Order || (index + 1)), '" min="1"/>',
+            '    </div>',
+            '    <div class="col-md-8">',
+            '      <label>Report (optional)</label>',
+            '      <input type="text" class="form-control rpt-report" value="', (r.Report || ''), '"/>',
+            '    </div>',
+            '    <div class="col-md-2 d-flex align-items-end">',
+            '      <button type="button" class="btn btn-outline-danger btn-block btn-remove-report">Remove</button>',
+            '    </div>',
+            '  </div>',
+            '</div>'
+        ].join('');
+    }
+
+    function renderReports() {
+        var html = [];
+        for (var i = 0; i < state.reports.length; i++) {
+            html.push(renderReportRow(state.reports[i], i));
+        }
+        $m.find('#reports-list').html(html.join(''));
+    }
+
+    function addReportRow() {
+        var nextOrder = state.reports.length + 1;
+        state.reports.push({
+            Title: '',
+            Id: '',
+            IdWeb: '',
+            Order: nextOrder,
+            Report: ''
+        });
+        renderReports();
+    }
+
+    function collectReportsFromUI() {
+        var rows = $m.find('#reports-list .report-row');
+        var arr = [];
+        rows.each(function (idx, el) {
+            var $row = $(el);
+            arr.push({
+                Title: $row.find('.rpt-title').val(),
+                Id: $row.find('.rpt-id').val(),
+                IdWeb: $row.find('.rpt-idweb').val(),
+                Order: Number($row.find('.rpt-order').val() || (idx + 1)),
+                Report: $row.find('.rpt-report').val()
+            });
+        });
+        state.reports = arr;
+    }
+
+    function initUsersSelect() {
+        var selectEl = $m.find('#user-select').get(0);
+        if (!selectEl) return;
+
+        // Normalize global map
+        if (typeof window.__usersMap === 'undefined' || !window.__usersMap || Object.keys(window.__usersMap).length === 0) {
+            window.__usersMap = state.usersMap || {};
+        }
+        var map = {};
+        Object.keys(window.__usersMap).forEach(function (k) {
+            map[String(k)] = window.__usersMap[k];
+        });
+        window.__usersMap = map; // overwrite with normalized
+
+        // Kill any previous instance
+        destroyChoices();
+
+        // Init Choices
+        choicesInstance = new Choices(selectEl, {
+            removeItemButton: true,
+            searchEnabled: true,
+            shouldSort: false,
+            placeholder: true,
+            placeholderValue: 'Select users'
+        });
+
+        // Load ALL users into dropdown
+        var allChoices = Object.keys(map).map(function (id) {
+            return { value: id, label: map[id] };
+        });
+        choicesInstance.setChoices(allChoices, 'value', 'label', true);
+
+        // Preselect the assigned users
+        var selectedIds = (state.selectedUserIds || []).map(String);
+        choicesInstance.setChoiceByValue(selectedIds);
+    }
+
+
+
+    // Submit handler
+    async function submitEdit() {
+        collectReportsFromUI();
+
+        var payload = {
+            Id: Number($m.find('#group-id').val()),
+            Title: $m.find('#group-title').val(),
+            Comment: $m.find('#group-comment').val(),
+            Reports: state.reports,
+            SelectedExistingUserIds: (choicesInstance ? choicesInstance.getValue(true) : [])
+                .map(function (v) { return Number(v); })
+                .filter(function (n) { return !Number.isNaN(n); })
+        };
+
+        // Read anti-forgery token from hidden form
+        var token = $m.find('#edit-group-form input[name="__RequestVerificationToken"]').val();
+        if (!token) {
+            alert('Anti-forgery token missing.');
+            return;
+        }
+
+        try {
+            var resp = await fetch('/Reports/EditReportAjax', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'RequestVerificationToken': token
+                },
+                body: JSON.stringify(payload),
+                credentials: 'same-origin'
+            });
+
+            if (!resp.ok) {
+                var tx = await resp.text();
+                console.error('Server error:', tx);
+                alert('Failed to save changes.');
+                return;
+            }
+
+            var data = await resp.json();
+            if (data && data.success) {
+                $m.modal('hide');
+                // Reload to reflect changes
+                location.reload();
+            } else {
+                alert('Save failed.');
+            }
+        } catch (e) {
+            console.error(e);
+            alert('Network error.');
+        }
+    }
+
+    // Bind once when the modal is inserted (script is part of partial)
+    $m.on('shown.bs.modal', function () {
+        // Parse datasets
+        try {
+            state.reports = JSON.parse($m.attr('data-reports') || '[]') || [];
+        } catch (e) { state.reports = []; }
+        try {
+            state.selectedUserIds = JSON.parse($m.attr('data-selectedusers') || '[]') || [];
+        } catch (e) { state.selectedUserIds = []; }
+        try {
+            var rawUsers = JSON.parse($m.attr('data-users') || '{}') || {};
+            // Normalize keys to strings:
+            var normalized = {};
+            Object.keys(rawUsers).forEach(function (k) {
+                normalized[String(k)] = rawUsers[k];
+            });
+            state.usersMap = normalized;
+        } catch (e) { state.usersMap = {}; }
+
+        renderReports();
+        initUsersSelect();
+    });
+
+    // Delegated events scoped to the modal
+    $m.on('click', '#btn-add-report', function () {
+        addReportRow();
+    });
+
+    $m.on('click', '.btn-remove-report', function () {
+        var $row = $(this).closest('.report-row');
+        var idx = Number($row.attr('data-index'));
+        if (!Number.isNaN(idx)) {
+            state.reports.splice(idx, 1);
+            renderReports();
+        }
+    });
+
+    // Keep state in sync when inputs change
+    $m.on('input change', '#reports-list .report-row input', function () {
+        collectReportsFromUI();
+    });
+
+    $m.on('click', '#btn-save-edit', function () {
+        submitEdit();
+    });
+
+})();
+        $(function(){
+                var $m = $('#EditReportModal');
+            $m.modal({ backdrop: 'static', keyboard: false });
+            $m.on('hidden.bs.modal', function () {
+                $(this).remove(); // cleanup after close
+            });
+            $m.on('click', '.btn-close-modal', function () { $m.modal('hide'); });
+        });
+</script>
+
+

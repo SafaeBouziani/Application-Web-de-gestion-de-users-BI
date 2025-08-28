@@ -1,11 +1,8 @@
-﻿@model IEnumerable<UserManagementPBI.Models.Users>
+﻿@model IEnumerable<UserManagementPBI.Models.Reports>
+
 @{
-    ViewData["Title"] = "Dashboard";
-    Layout = "~/Views/Shared/_Layout.cshtml";
-
+    ViewData["Title"] = "Index";
 }
-
-
 <div class="dashboard">
 
 
@@ -25,8 +22,8 @@
 
         <!-- Section Header -->
         <div class="section-header">
-            <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/53da30b81543d43962b9d4857e9dcaad032d1f08?placeholderIfAbsent=true&apiKey=099995ce3fec4a6aab6339dc5406b76b" alt="Users" class="section-icon">
-            <h1 class="section-title">Utilisateurs BI</h1>
+            <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/53da30b81543d43962b9d4857e9dcaad032d1f08?placeholderIfAbsent=true&apiKey=099995ce3fec4a6aab6339dc5406b76b" alt="Groups" class="section-icon">
+            <h1 class="section-title">Groupes de rapports BI</h1>
             <div class="search-bar">
                 <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/175e372235aefe1ea6e66cd6d93728050cfd075c?placeholderIfAbsent=true&apiKey=099995ce3fec4a6aab6339dc5406b76b" alt="Search" class="search-bar-icon">
                 <input type="text" placeholder="Recherche" class="search-input">
@@ -59,9 +56,9 @@
                         <li class="dropdown-submenu">
                             <a class="dropdown-item" href="#">Par statut     ▶</a>
                             <ul class="dropdown-menu submenu">
-                                <li><a class="dropdown-item" href="/Users/Index">Actifs</a></li>
-                                <li><a class="dropdown-item" href="/Users/IndexInactivated">Inactifs</a></li>
-                                <li><a class="dropdown-item" href="/Users/IndexAll">Tous</a></li>
+                                <li><a class="dropdown-item" href="/Reports/Index">Actifs</a></li>
+                                <li><a class="dropdown-item" href="/Reports/IndexInactivated">Inactifs</a></li>
+                                <li><a class="dropdown-item" href="/Reports/IndexAll">Tous</a></li>
                             </ul>
                         </li>
                     </ul>
@@ -69,7 +66,7 @@
 
             </div>
             <div class="filter-right">
-                <button id="btn-open-create-user" class="action-button primary" type="button">
+                <button id="btn-open-create-group" class="action-button primary" type="button">
                     <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/376f640a2a3a1aac147f0da3520427fa0abb8973?placeholderIfAbsent=true&apiKey=099995ce3fec4a6aab6339dc5406b76b" alt="Plus" class="action-icon">
                     <span>Nouveau</span>
                 </button>
@@ -93,27 +90,11 @@
                             <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/7c215a276d945185c56ecd3514506bd6ce90d21d?placeholderIfAbsent=true&apiKey=099995ce3fec4a6aab6339dc5406b76b" alt="Sort" class="sort-icon">
                         </th>
                         <th class="sortable">
-                            <span>Utilisateur</span>
+                            <span>Titre</span>
                             <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/7c215a276d945185c56ecd3514506bd6ce90d21d?placeholderIfAbsent=true&apiKey=099995ce3fec4a6aab6339dc5406b76b" alt="Sort" class="sort-icon">
                         </th>
                         <th class="sortable">
-                            <span>Client</span>
-                            <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/7c215a276d945185c56ecd3514506bd6ce90d21d?placeholderIfAbsent=true&apiKey=099995ce3fec4a6aab6339dc5406b76b" alt="Sort" class="sort-icon">
-                        </th>
-                        <th class="sortable">
-                            <span>Date de création</span>
-                            <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/7c215a276d945185c56ecd3514506bd6ce90d21d?placeholderIfAbsent=true&apiKey=099995ce3fec4a6aab6339dc5406b76b" alt="Sort" class="sort-icon">
-                        </th>
-                        <th class="sortable">
-                            <span>Role</span>
-                            <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/7c215a276d945185c56ecd3514506bd6ce90d21d?placeholderIfAbsent=true&apiKey=099995ce3fec4a6aab6339dc5406b76b" alt="Sort" class="sort-icon">
-                        </th>
-                        <th class="sortable">
-                            <span>Email</span>
-                            <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/7c215a276d945185c56ecd3514506bd6ce90d21d?placeholderIfAbsent=true&apiKey=099995ce3fec4a6aab6339dc5406b76b" alt="Sort" class="sort-icon">
-                        </th>
-                        <th class="sortable">
-                            <span>Mot de passe</span>
+                            <span>Commentaire</span>
                             <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/7c215a276d945185c56ecd3514506bd6ce90d21d?placeholderIfAbsent=true&apiKey=099995ce3fec4a6aab6339dc5406b76b" alt="Sort" class="sort-icon">
                         </th>
                         <th class="sortable">
@@ -132,12 +113,8 @@
                         <tr class="table-row">
                             <td><input type="checkbox" class="table-checkbox"></td>
                             <td>@Html.DisplayFor(m => item.ID)</td>
-                            <td>@Html.DisplayFor(m => item.userName)</td>
-                            <td>@Html.DisplayFor(m => item.client)</td>
-                            <td>@Html.DisplayFor(m => item.DateCreation)</td>
-                            <td>@Html.DisplayFor(m => item.role)</td>
-                            <td>@Html.DisplayFor(m => item.mail)</td>
-                            <td>@Html.DisplayFor(m => item.pwd)</td>
+                            <td>@Html.DisplayFor(m => item.title)</td>
+                            <td>@Html.DisplayFor(m => item.commentaire)</td>
                             <td>
                                 @if (item.is_active)
                                 {
@@ -225,48 +202,48 @@
 
 </style>
 @section Scripts {
-    <script src="~/js/users-modal.js" asp-append-version="true"></script>
+    <script src="~/js/groups-modal.js" asp-append-version="true"></script>
     <script>
         // click handler to fetch & append the modal partial
         $(function () {
-          $('#btn-open-create-user').on('click', function () {
-            $.get('/Users/CreateModal')
+          $('#btn-open-create-group').on('click', function () {
+            $.get('/Reports/CreateModal')
               .done(function (html) {
                 $('body').append(html);
                 // show is handled in the partial inline script, but ensure shown bootstrapping if needed
-                $('#createUserModal').modal('show');
+                $('#CreateGroupModal').modal('show');
               })
               .fail(function () {
-                alert('Failed to load create-user form. Refresh and try again.');
+                alert('Failed to load create-group form. Refresh and try again.');
               });
           });
         });
         $(document).on('click', '.edit-button', function (e) {
             e.preventDefault(); // stop the browser following the link
 
-            var userId = $(this).data('id');
+            var groupId = $(this).data('id');
 
-            $.get('/Users/EditModal', { id: userId })
+            $.get('/Reports/EditModal', { id: groupId })
                 .done(function (html) {
                     $('body').append(html);
-                    $('#createUserModal').modal('show');
+                    $('#EditReportModal').modal('show');
                 })
                 .fail(function () {
-                    alert('Failed to load edit-user form. Refresh and try again.');
+                    alert('Failed to load edit-group form. Refresh and try again.');
                 });
         });
         $(document).on('click', '.delete-button', function (e) {
             e.preventDefault(); // stop the browser following the link
 
-            var userId = $(this).data('id');
+            var groupId = $(this).data('id');
 
-            $.get('/Users/Delete', { id: userId })
+            $.get('/Reports/Delete', { id: groupId })
                 .done(function (html) {
                     $('body').append(html);
-                    $('#deleteUserModal').modal('show');
+                    $('#deleteReportModal').modal('show');
                 })
                 .fail(function () {
-                    alert('Failed to load delete-user form. Refresh and try again.');
+                    alert('Failed to load delete-group form. Refresh and try again.');
                 });
         });
         $(document).ready(function () {

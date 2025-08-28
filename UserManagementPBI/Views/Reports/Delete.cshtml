@@ -1,16 +1,18 @@
-﻿@model UserManagementPBI.Models.Users
+﻿@model UserManagementPBI.Models.Reports
+
 @{
-    Layout = null; // modal partial, shown by AJAX
+    ViewData["Title"] = "Delete";
 }
 
-<div class="modal fade" id="deleteUserModal" tabindex="-1" role="dialog" aria-labelledby="deleteUserModalLabel" aria-hidden="true">
+
+<div class="modal fade" id="deleteReportModal" tabindex="-1" role="dialog" aria-labelledby="deleteReportModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
         <div class="modal-content">
             <form asp-action="Delete" method="post">
                 @Html.AntiForgeryToken()
                 <div class="modal-header">
-                    <h5 class="modal-title text-danger" id="deleteUserModalLabel">
-                        Supprimer l’utilisateur BI
+                    <h5 class="modal-title text-danger" id="deleteReportModalLabel">
+                        Supprimer le groupe de rapports BI
                     </h5>
                     <button type="button" class="close btn-close-modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
@@ -20,20 +22,12 @@
                 <div class="modal-body">
                     <p class="text-muted">Êtes-vous sûr de vouloir supprimer cet utilisateur ?</p>
                     <dl class="row">
-                        <dt class="col-sm-3">Nom d'utilisateur</dt>
-                        <dd class="col-sm-9">@Html.DisplayFor(m => m.userName)</dd>
+                        <dt class="col-sm-3">Titre</dt>
+                        <dd class="col-sm-9">@Html.DisplayFor(m => m.title)</dd>
 
-                        <dt class="col-sm-3">Rôle</dt>
-                        <dd class="col-sm-9">@Html.DisplayFor(m => m.role)</dd>
+                        <dt class="col-sm-3">Commentaire</dt>
+                        <dd class="col-sm-9">@Html.DisplayFor(m => m.commentaire)</dd>
 
-                        <dt class="col-sm-3">Client</dt>
-                        <dd class="col-sm-9">@Html.DisplayFor(m => m.client)</dd>
-
-                        <dt class="col-sm-3">Email</dt>
-                        <dd class="col-sm-9">@Html.DisplayFor(m => m.mail)</dd>
-
-                        <dt class="col-sm-3">ViewUser</dt>
-                        <dd class="col-sm-9">@Html.DisplayFor(m => m.view_user)</dd>
                     </dl>
 
                     <input type="hidden" asp-for="ID" />
@@ -50,7 +44,7 @@
 
 <script>
     $(function(){
-        var $m = $('#deleteUserModal');
+        var $m = $('#deleteReportModal');
         $m.modal({ backdrop: 'static', keyboard: false });
         $m.on('hidden.bs.modal', function () {
             $(this).remove(); // cleanup after close

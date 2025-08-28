@@ -263,9 +263,8 @@ function initializeFilters() {
                 refreshData();
             } else if (buttonText.includes('Selected')) {
                 toggleSelectionMenu();
-            } else if (buttonText === 'Filtrer par') {
-                toggleFilterMenu();
             }
+
         });
     });
 
@@ -273,12 +272,6 @@ function initializeFilters() {
     actionButtons.forEach(button => {
         button.addEventListener('click', function () {
             const buttonText = this.querySelector('span').textContent;
-
-            if (buttonText === 'Nouveau') {
-                openNewUserDialog();
-            } else if (buttonText === 'Import/Export') {
-                openImportExportDialog();
-            }
         });
     });
 }
@@ -384,25 +377,6 @@ function sortTable(header) {
     rows.forEach(row => tbody.appendChild(row));
 }
 
-function copyToClipboard(text) {
-    if (navigator.clipboard) {
-        navigator.clipboard.writeText(text).then(() => {
-            console.log('Email copied to clipboard:', text);
-        }).catch(err => {
-            console.error('Failed to copy email:', err);
-        });
-    } else {
-        // Fallback for older browsers
-        const textArea = document.createElement('textarea');
-        textArea.value = text;
-        document.body.appendChild(textArea);
-        textArea.select();
-        document.execCommand('copy');
-        document.body.removeChild(textArea);
-        console.log('Email copied to clipboard (fallback):', text);
-    }
-}
-
 function showCopyFeedback(icon) {
     const originalSrc = icon.src;
     // You could change the icon to a checkmark temporarily
@@ -412,23 +386,7 @@ function showCopyFeedback(icon) {
     }, 1000);
 }
 
-function updatePageContent(menuText) {
-    const sectionTitle = document.querySelector('.section-title');
 
-    switch (menuText) {
-        case 'Tableau de bord':
-            sectionTitle.textContent = 'Utilisateurs BI';
-            break;
-        case 'Historique':
-            sectionTitle.textContent = 'Historique des actions';
-            break;
-        case 'Statistiques':
-            sectionTitle.textContent = 'Statistiques d\'utilisation';
-            break;
-        default:
-            sectionTitle.textContent = 'Utilisateurs BI';
-    }
-}
 
 function loadPageData(pageNumber) {
     // Simulate loading new page data
@@ -460,10 +418,7 @@ function toggleSelectionMenu() {
     // Implementation would show/hide selection options
 }
 
-function toggleFilterMenu() {
-    console.log('Toggle filter menu');
-    // Implementation would show/hide filter options
-}
+
 
 function openNewUserDialog() {
     console.log('Opening new user dialog');

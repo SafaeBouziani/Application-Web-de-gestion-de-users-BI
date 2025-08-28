@@ -1,84 +1,200 @@
-﻿@model UserManagementPBI.Models.Users
+﻿
+@model UserManagementPBI.Models.Users
 
 @{
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
 
-<div>
-    <h4>Users</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.userName)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.userName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.pwd)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.pwd)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.role)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.role)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.client)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.client)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.mail)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.mail)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.view_user)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.view_user)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.last_failed_utc_datetime)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.last_failed_utc_datetime)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.failed_times)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.failed_times)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DateCreation)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DateCreation)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DateModification)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DateModification)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CreatedByAdminId)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CreatedByAdminId)
-        </dd>
-    </dl>
+<div class="dashboard">
+
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Page Header -->
+        <div class="page-header">
+            <div class="breadcrumbs">
+                <div class="breadcrumb-item">
+                    <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/fcb3bc0414eccce6fe1385a220fa3858e67e605b?placeholderIfAbsent=true&apiKey=099995ce3fec4a6aab6339dc5406b76b" alt="Home" class="breadcrumb-icon">
+                    <span>Tableau de bord</span>
+                </div>
+                <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/4c8200eba9cded5f68650867b7773fea977f1234?placeholderIfAbsent=true&apiKey=099995ce3fec4a6aab6339dc5406b76b" alt="Arrow" class="breadcrumb-arrow">
+            </div>
+            <div class="header-divider"></div>
+        </div>
+
+        <!-- Section Header -->
+        <div class="section-header">
+            <a asp-action="Index">
+                <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/53da30b81543d43962b9d4857e9dcaad032d1f08?placeholderIfAbsent=true&apiKey=099995ce3fec4a6aab6339dc5406b76b" alt="Users" class="section-icon">
+            </a>           
+            <h1 class="section-title">Utilisateurs BI</h1>
+            <div class="section-divider"></div>
+        </div>
+
+    
+
+        <div class="user-details">
+            <div class="data-content">
+                <div class="content-grid">
+
+                    <!-- User Details Card -->
+                    <article class="user-details-card">
+                        <div class="user-info-section">
+                            <div class="user-photo">
+                                <img src="https://img.favpng.com/21/13/5/user-profile-default-computer-icons-network-video-recorder-png-favpng-7dPZA8WRdY80Uw3bdMWkEN4fR.jpg"
+                                     alt="@Model.userName profile"
+                                     class="profile-image">
+                                <h2 class="user-name-title">@Model.userName</h2>
+                            </div>
+                        </div>
+
+                        <div class="user-details-section">
+                            <h3 class="details-title">Détails</h3>
+                            <div class="details-divider"></div>
+                            <dl class="details-list">
+                                <div class="detail-item">
+                                    <span class="detail-label">Utilisateur:</span>
+                                    <span class="detail-value">@Model.userName</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Email:</span>
+                                    <span class="detail-value">@Model.mail</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Role:</span>
+                                    <span class="detail-value">@Model.role</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Date de création:</span>
+                                    <span class="detail-value">@Model.DateCreation</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Date modification:</span>
+                                    <span class="detail-value">@Model.DateModification</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Client:</span>
+                                    <span class="detail-value">@Model.client</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">User view:</span>
+                                    <span class="detail-value">@Model.view_user</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Créé par:</span>
+                                    <span class="detail-value">@Model.CreatedByAdmin?.UserName</span>
+                                </div>
+                            </dl>
+                        </div>
+
+                        <div class="actions-section">
+                            <a href="#" data-id="@Model.ID" class="edit-button2">EDIT</a>
+                        </div>
+                    </article>
+
+                    <!-- Reports List -->
+                    <section class="reports-list">
+                        <header class="reports-header">
+                            <h2>Liste des rapports</h2>
+                        </header>
+
+                        @if (Model.UsersReports != null && Model.UsersReports.Any())
+                        {
+                            var groupedReports = Model.UsersReports
+                            .GroupBy(ur => ur.Report?.title)
+                            .ToList();
+
+                            foreach (var group in groupedReports)
+                            {
+                                <div class="report-group">
+                                    <div class="report-header">
+                                        <span class="report-title">@group.Key</span>
+                                        <span class="arrow">▼</span>
+                                    </div>
+                                    <div class="report-list">
+                                        @if (group.SelectMany(g => g.Report.ReportsBIs).Any())
+                                        {
+                                            foreach (var reportBI in group.SelectMany(g => g.Report.ReportsBIs))
+                                            {
+                                                <div class="report-item">@reportBI.title</div>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <div class="report-item">Aucun rapport</div>
+                                        }
+                                    </div>
+                                </div>
+                            }
+                        }
+                        else
+                        {
+                            <p>Aucun rapport disponible</p>
+                        }
+
+                        <button id="btn-open-assign-group" class="plus-button">+</button>
+                    </section>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.ID">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+
+<script>
+
+    document.querySelectorAll(".report-header").forEach(header => {
+        header.addEventListener("click", () => {
+            const list = header.nextElementSibling;
+            const icon = header.querySelector(".arrow");
+
+            if (list.style.display === "block") {
+                list.style.display = "none";
+                icon.textContent = "▼";
+            } else {
+                list.style.display = "block";
+                icon.textContent = "▲";
+            }
+        });
+    });
+
+
+</script>
+@section Scripts {
+    <script src="~/js/user_group.js" asp-append-version="true"></script>
+    <script>
+        $(function () {
+
+            $('#btn-open-assign-group').on('click', function () {
+                const userId = @Model.ID;
+                $.get('/Users/AssignGroup', { id: userId })
+                    .done(function (html) {
+                        $('body').append(html);
+                        $('#AssignGroupModal').modal('show');
+                    })
+                    .fail(function () {
+                        alert('Failed to load assign-group form. Refresh and try again.');
+                    });
+            });
+
+            $('.edit-button2').on('click', function (e) {
+                e.preventDefault(); // now e is defined
+                const userId = $(this).data('id'); // get id from the clicked button
+                $.get('/Users/Edit', { id: userId })
+                    .done(function (html) {
+                        $('body').append(html);
+                        $('#editUserModal1').modal('show'); // make sure the modal id matches your partial
+                    })
+                    .fail(function () {
+                        alert('Failed to load edit-user form. Refresh and try again.');
+                    });
+            });
+
+        });
+
+
+    </script>
+
+}

@@ -12,6 +12,7 @@ namespace UserManagementPBI.Models
         public string? client { get; set; }
         public string? mail { get; set; }
         public string? view_user { get; set; }
+        public bool is_active { get; set; } = true;
         public DateTime? last_failed_utc_datetime { get; set; }
         public int failed_times { get; set; } = 0;
         public DateTime DateCreation { get; set; }  
@@ -19,6 +20,7 @@ namespace UserManagementPBI.Models
         public string? CreatedByAdminId { get; set; }
         public Admins? CreatedByAdmin { get; set; }
         // Additional properties can be added as needed
+        public ICollection<Users_Reports> UsersReports { get; set; } = new List<Users_Reports>();
     }
   
 

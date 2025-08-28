@@ -1,0 +1,125 @@
+﻿
+
+/* Layout */
+.report-details1 {
+    display: flex;
+    width: 100%;
+    height: 100vh;
+    background-color: white;
+}
+
+/* Data Content */
+.data-content1 {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.data-section-header1 {
+    display: flex;
+    align-items: center;
+    padding: 20px 64px;
+    width: 100%;
+}
+
+.data-section-container1 h2 {
+    font-size: 20px;
+    font-weight: 600;
+    color: #71717a;
+}
+
+.tables-container1 {
+    position: relative;
+    align-self: stretch;
+    padding: 20px 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+
+/* Table Cards */
+.table-card1 {
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    border-radius: 6px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    width: 100%;
+}
+
+.card-header1 {
+    padding: 20px;
+}
+
+    .card-header1 h3 {
+        font-size: 20px;
+        font-weight: 500;
+        color: rgba(63, 63, 70, 0.9);
+    }
+
+/* Table Header */
+.table-header1 {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    border: 1px solid rgba(63, 63, 70, 0.1);
+    background-color: #f8fafc;
+}
+
+.table-header-cell1 {
+    padding: 16px 20px;
+    border-right: 1px solid rgba(63, 63, 70, 0.1);
+}
+
+    .table-header-cell1:last-child {
+        border-right: none;
+    }
+
+.header-content1 span {
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: rgba(63, 63, 70, 0.9);
+}
+
+/* Table Rows */
+.table-row1 {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    border: 1px solid rgba(63, 63, 70, 0.1);
+    height: 50px;
+}
+
+/* Add Buttons */
+.add-button1 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform: rotate(-45deg);
+    background-color: rgba(0, 0, 0, 0.1);
+    height: 94px;
+    width: 95px;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .tables-container1 {
+        padding: 16px;
+    }
+
+    .table-header1,
+    .table-row1 {
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    }
+}
+
+@media (max-width: 640px) {
+    .table-header1,
+    .table-row1 {
+        grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+        overflow-x: auto;
+    }
+}

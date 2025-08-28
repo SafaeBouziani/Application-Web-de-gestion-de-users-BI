@@ -1,0 +1,65 @@
+﻿@model UserManagementPBI.Models.Reports_Reports_BI
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+
+<div class="modal fade" id="deleteReportItemModal" tabindex="-1" role="dialog" aria-labelledby="deleteReportItemModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <form asp-action="Delete" method="post">
+                @Html.AntiForgeryToken()
+                <div class="modal-header">
+                    <h5 class="modal-title text-danger" id="deleteReportItemModalLabel">
+                        Supprimer le rapport BI
+                    </h5>
+                    <button type="button" class="close btn-close-modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    <p class="text-muted">Êtes-vous sûr de vouloir supprimer ce rapport ?</p>
+                    <dl class="row">
+                        <dt class="col-sm-3">ID Power BI</dt>
+                        <dd class="col-sm-9">@Html.DisplayFor(m => m.id_report_bi)</dd>
+
+                        <dt class="col-sm-3">Titre</dt>
+                        <dd class="col-sm-9">@Html.DisplayFor(m => m.title)</dd>
+
+                        <dt class="col-sm-3">ID Web</dt>
+                        <dd class="col-sm-9">@Html.DisplayFor(m => m.id_web)</dd>
+
+                        <dt class="col-sm-3">Report</dt>
+                        <dd class="col-sm-9">@Html.DisplayFor(m => m.report)</dd>
+
+                        <dt class="col-sm-3">Groupe</dt>
+                        <dd class="col-sm-9">@Html.DisplayFor(m => m.ReportGroup.title)</dd>
+
+                        <dt class="col-sm-3">Ordre</dt>
+                        <dd class="col-sm-9">@Html.DisplayFor(m => m.order_report)</dd>
+                    </dl>
+
+                    <input type="hidden" name="id" value="@Model.ID_Reports_Reports_BI" />
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-close-modal">Annuler</button>
+                    <button type="submit" class="btn btn-danger">Supprimer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function(){
+        var $m = $('#deleteReportItemModal');
+        $m.modal({ backdrop: 'static', keyboard: false });
+        $m.on('hidden.bs.modal', function () {
+            $(this).remove(); // cleanup after close
+        });
+        $m.on('click', '.btn-close-modal', function () { $m.modal('hide'); });
+    });
+</script>
