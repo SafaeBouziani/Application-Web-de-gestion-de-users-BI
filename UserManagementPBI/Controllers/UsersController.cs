@@ -11,6 +11,7 @@ using UserManagementPBI.ViewModels;
 
 namespace UserManagementPBI.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class UsersController : Controller
     {
         private readonly ApplicationDbContext _context;

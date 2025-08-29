@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -11,6 +8,7 @@ using UserManagementPBI.ViewModels;
 
 namespace UserManagementPBI.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class Reports_Reports_BIController : Controller
     {
         private readonly ApplicationDbContext _context;
